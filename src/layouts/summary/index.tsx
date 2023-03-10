@@ -9,11 +9,11 @@ const Summary = (props: Props) => {
   return (
     <div>
       <HeadPart />
-      <div className="flex justify-between">
-        <div className="w-[25%]">
+      <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start">
+        <div className="lg:w-[25%] w-[90%]">
           <LeftPart />
         </div>
-        <div className="w-[74%]">
+        <div className="lg:w-[74%] w-[90%]">
           <RightPart />
         </div>
       </div>
