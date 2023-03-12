@@ -15,9 +15,9 @@ const BAR_CHART = [
 
 const ChartPart = (props: any) => {
   return (
-    <div className="w-[49%] flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
+    <div className="md:w-[49%] w-full flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
       <p className="font-semibold">Headcount by Contract Type</p>
-      <div className="w-full flex justify-center lg:min-h-[300px]">
+      <div className="w-full flex justify-center md:min-h-[200px] xl:min-h-[300px]">
         <Bar
           data={{
             labels: BAR_CHART.map((item) => item.MONTH),
@@ -31,6 +31,7 @@ const ChartPart = (props: any) => {
           }}
           options={
             {
+              responsive: true
               // indexAxis: "y",
               //   legend: { display: false },
               //   title: {
@@ -47,7 +48,7 @@ const ChartPart = (props: any) => {
 
 const RightPart = (props: Props) => {
   return (
-    <div className="flex flex-wrap justify-around">
+    <div className="flex flex-wrap flex-col md:flex-row justify-around">
       <ChartPart />
       <ChartPart />
       <ChartPart />
