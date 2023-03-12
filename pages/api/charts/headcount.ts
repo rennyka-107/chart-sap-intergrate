@@ -9,7 +9,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
     if(req.method === "GET") {
-        const result = await axios.get("http://45.117.82.171:8000/sphinx/headcount");
+        const result = await axios.get("http://45.117.82.171:8000/sphinx/headcount?year_f=2017&year_t=2017");
         if(result.data) {
             res.status(200).json(result.data?.CHART)
         } else {

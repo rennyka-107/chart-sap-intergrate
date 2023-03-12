@@ -8,22 +8,22 @@ import { Bar, Doughnut } from "react-chartjs-2";
 
 type Props = {};
 
-const PIE_CHART = [
-  { COLOR: "#41B883", DATA: 40, LABEL: "VueJS" },
-  { COLOR: "#E46651", DATA: 20, LABEL: "EmberJS" },
-  { COLOR: "#00D8FF", DATA: 30, LABEL: "ReactJS" },
-  { COLOR: "#DD1B16", DATA: 10, LABEL: "AngularJS" },
-];
+// const PIE_CHART = [
+//   { COLOR: "#41B883", DATA: 40, LABEL: "VueJS" },
+//   { COLOR: "#E46651", DATA: 20, LABEL: "EmberJS" },
+//   { COLOR: "#00D8FF", DATA: 30, LABEL: "ReactJS" },
+//   { COLOR: "#DD1B16", DATA: 10, LABEL: "AngularJS" },
+// ];
 
-const BAR_CHART = [
-  { MONTH: "January", DATA: 40 },
-  { MONTH: "February", DATA: 20 },
-  { MONTH: "March", DATA: 12 },
-  { MONTH: "April", DATA: 39 },
-  { MONTH: "May", DATA: 10 },
-  { MONTH: "June", DATA: 40 },
-  { MONTH: "July", DATA: 39 },
-];
+// const BAR_CHART = [
+//   { MONTH: "January", DATA: 40 },
+//   { MONTH: "February", DATA: 20 },
+//   { MONTH: "March", DATA: 12 },
+//   { MONTH: "April", DATA: 39 },
+//   { MONTH: "May", DATA: 10 },
+//   { MONTH: "June", DATA: 40 },
+//   { MONTH: "July", DATA: 39 },
+// ];
 
 const ChartBarPart = ({
   data,
@@ -132,13 +132,6 @@ const LeftPart = (props: Props) => {
     ageRangeTypeHeadcount,
     getInitialData,
   } = useContract();
-
-  console.log(
-    detailHeadcount,
-    contractTypeHeadcount,
-    genderTypeHeadcount,
-    ageRangeTypeHeadcount
-  );
 
   useEffect(() => {
     getInitialData && getInitialData();

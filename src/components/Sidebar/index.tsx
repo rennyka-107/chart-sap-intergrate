@@ -1,20 +1,16 @@
 import React, { useState } from "react";
 import ArrowRight from "../icons/ArrowRight";
-import ChevLeft from "../icons/ChevLeft";
-import ChevRight from "../icons/ChevRight";
 import { AnimatePresence, motion, useCycle } from "framer-motion";
 import Menubar from "../icons/Menubar";
 import Close from "../icons/Close";
+import { useRouter } from "next/router";
 
 type Props = {};
 
 const ItemsSidebar = [
-  "Summary",
-  "Employees Overview",
-  "Employees Details",
-  "Departments",
-  "Salary Analysis",
-  "Training",
+  {label: "Summary", path: "/"},
+  {label: "Employees Overview", path: "/employees-overview"},
+  {label: "Departments", path: "/departments"},
 ];
 
 const sideVariants = {
@@ -40,13 +36,9 @@ const itemVariants = {
 };
 
 const Sidebar = (props: Props) => {
-  const [chooseItem, setChooseItem] = useState<string>(ItemsSidebar[0]);
   const [open, cycleOpen] = useCycle(false, true);
-
-  function handleChooseItem(item: string) {
-    setChooseItem(item);
-  }
-
+  const router = useRouter();
+console.log(router.pathname)
   return (
     <div>
       <AnimatePresence>
@@ -72,22 +64,23 @@ const Sidebar = (props: Props) => {
                     animate="open"
                     exit="closed"
                     variants={sideVariants}
-                    className="md:flex-col md:min-w-full flex flex-col list-none mt-[2rem] overflow-hidden"
+                    className="md:flex-col md:min-w-full flex flex-col list-none mt-[0rem] overflow-hidden"
                   >
-                    {ItemsSidebar.map((item: string, idx: number) => (
+                    {ItemsSidebar.map((item: {label: string, path: string}, idx: number) => (
                       <motion.span
                         key={idx}
-                        onClick={() => handleChooseItem(item)}
+                        onClick={() => router.push(item.path)}
                         whileHover={{ scale: 1.1 }}
                         variants={itemVariants}
                         className={`${
-                          chooseItem === item ? "text-blue-500" : ""
+                          router.pathname === item.path ? "text-blue-500" : ""
                         } flex justify-center gap-[5px] text-base text-center md:min-w-full text-gray-500 uppercase font-bold pt-1 pb-4 no-underline hover:text-blue-400 cursor-pointer`}
                       >
-                        {item}
-                        {chooseItem === item ? <ArrowRight /> : <></>}
+                        {item.label}
+                        {router.pathname === item.path ? <ArrowRight /> : <></>}
                       </motion.span>
                     ))}
+                    <span className="h-[40px]" />
                   </motion.div>
                 </div>
               </div>
@@ -97,7 +90,7 @@ const Sidebar = (props: Props) => {
           <></>
         )}
       </AnimatePresence>
-      <div className="fixed m-2 cursor-pointer py-2 px-5" onClick={() => cycleOpen()}>{open ? <Close /> : <Menubar />}</div>
+      <div className={`${open ? "" : "bg-blue-300 rounded-md shadow-lg hover:bg-blue-400" } fixed m-2 cursor-pointer p-3 flex gap-[5px]`} onClick={() => cycleOpen()}>{open ? <Close /> : <Menubar />}{open ? "" : "Menu"}</div>
     </div>
   );
 };

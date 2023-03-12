@@ -1,4 +1,10 @@
-import React from "react";
+import useSummaryChartBar, {
+  TypeDetailAverageScore,
+  TypeDetailHeadcount,
+  TypeDetailSickVocationLeave,
+} from "@/src/hooks/useSummaryChartBar";
+import isEmpty from "lodash.isempty";
+import React, { useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 
 type Props = {};
@@ -13,33 +19,133 @@ const BAR_CHART = [
   { MONTH: "July", DATA: 39 },
 ];
 
-const ChartPart = (props: any) => {
+const ChartPartSickLeave = ({ title, data }: any) => {
   return (
     <div className="md:w-[49%] w-full flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
-      <p className="font-semibold">Headcount by Contract Type</p>
+      <p className="font-semibold">{title}</p>
       <div className="w-full flex justify-center md:min-h-[200px] xl:min-h-[300px]">
         <Bar
           data={{
-            labels: BAR_CHART.map((item) => item.MONTH),
+            labels: !isEmpty(data)
+              ? data.map((item: TypeDetailSickVocationLeave) => item.YEAR)
+              : [],
             datasets: [
               {
-                label: "Population (millions)",
-                backgroundColor: BAR_CHART.map((item) => "#3e95cd"),
-                data: BAR_CHART.map((item) => item.DATA),
+                label: "Sick leave",
+                backgroundColor: !isEmpty(data)
+                  ? data.map(() => "#3e95cd")
+                  : [],
+                data: !isEmpty(data)
+                  ? data.map((item: TypeDetailSickVocationLeave) => item.SICK)
+                  : [],
+              },
+              {
+                label: "Vocation leave",
+                backgroundColor: !isEmpty(data)
+                  ? data.map(() => "#0D47A1 ")
+                  : [],
+                data: !isEmpty(data)
+                  ? data.map(
+                      (item: TypeDetailSickVocationLeave) => item.VOCATION
+                    )
+                  : [],
               },
             ],
           }}
-          options={
-            {
-              responsive: true
-              // indexAxis: "y",
-              //   legend: { display: false },
-              //   title: {
-              //     display: true,
-              //     text: "Predicted world population (millions) in 2050",
-              //   },
-            }
-          }
+          options={{
+            responsive: true,
+            scales: {
+              y: {
+                // stackWeight: 0.5,
+                ticks: {
+                  // labelOffset: 100
+                  autoSkip: false,
+                },
+              },
+            },
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+const ChartPartAverageScore = ({ title, data }: any) => {
+  return (
+    <div className="md:w-[49%] w-full flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
+      <p className="font-semibold">{title}</p>
+      <div className="w-full flex justify-center md:min-h-[200px] xl:min-h-[300px]">
+        <Bar
+          data={{
+            labels: !isEmpty(data)
+              ? data.map((item: TypeDetailAverageScore) => item.DEPARTMENT)
+              : [],
+            datasets: [
+              {
+                label: "Average score",
+                backgroundColor: !isEmpty(data)
+                  ? data.map(() => "#3e95cd")
+                  : [],
+                data: !isEmpty(data)
+                  ? data.map((item: TypeDetailAverageScore) => item.SCORE)
+                  : [],
+              },
+            ],
+          }}
+          options={{
+            responsive: true,
+            indexAxis: "y",
+            scales: {
+              y: {
+                // stackWeight: 0.5,
+                ticks: {
+                  // labelOffset: 100
+                  autoSkip: false,
+                },
+              },
+            },
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+const ChartPartHeadcount = ({ title, data }: any) => {
+  return (
+    <div className="md:w-[49%] w-full flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
+      <p className="font-semibold">{title}</p>
+      <div className="w-full flex justify-center md:min-h-[200px] xl:min-h-[300px]">
+        <Bar
+          data={{
+            labels: !isEmpty(data)
+              ? data.map((item: TypeDetailHeadcount) => item.Z_POSITION)
+              : [],
+            datasets: [
+              {
+                label: "Headcount",
+                backgroundColor: !isEmpty(data)
+                  ? data.map(() => "#F06292")
+                  : [],
+                data: !isEmpty(data)
+                  ? data.map((item: TypeDetailHeadcount) => item.HEADCOUNT)
+                  : [],
+              },
+            ],
+          }}
+          options={{
+            responsive: true,
+            indexAxis: "y",
+            scales: {
+              y: {
+                // stackWeight: 0.5,
+                ticks: {
+                  // labelOffset: 100
+                  autoSkip: false,
+                },
+              },
+            },
+          }}
         />
       </div>
     </div>
@@ -47,12 +153,32 @@ const ChartPart = (props: any) => {
 };
 
 const RightPart = (props: Props) => {
+  const {
+    getInitialData,
+    sickVocationLeave,
+    averageEmployeeScoreByDepartment,
+    headcountByPosition,
+    // totalSalaryExpensesByDepartment,
+  } = useSummaryChartBar();
+  useEffect(() => {
+    getInitialData && getInitialData();
+  }, [getInitialData]);
+
   return (
     <div className="flex flex-wrap flex-col md:flex-row justify-around">
-      <ChartPart />
-      <ChartPart />
-      <ChartPart />
-      <ChartPart />
+      <ChartPartSickLeave
+        data={sickVocationLeave}
+        title="Sick Leave & Vocation Leave By Year"
+      />
+      <ChartPartAverageScore
+        data={averageEmployeeScoreByDepartment}
+        title="Average Employee Score By Department"
+      />
+      <ChartPartHeadcount
+        data={headcountByPosition}
+        title="Headcount By Position"
+      />
+      {/* <ChartPartSickLeave title="Total Salary Expenses By Department" /> */}
     </div>
   );
 };

@@ -11,7 +11,7 @@ export default async function handler(
     if(req.method === "GET") {
         const result = await axios.get("http://45.117.82.171:8000/sphinx/sv_leave_get");
         if(result.data) {
-            res.status(200).json(result.data?.CHART_DATA)
+            res.status(200).json(result.data?.CHART_DATA?.map((item:any) => ({...item, YEAR: item.YEAR1})))
         } else {
             res.status(200).json([])
         }

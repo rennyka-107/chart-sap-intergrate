@@ -11,7 +11,7 @@ export default async function handler(
     if(req.method === "GET") {
         const result = await axios.get("http://45.117.82.171:8000/sphinx/point_job?year=2017");
         if(result.data) {
-            res.status(200).json(result.data?.SAP_DATA)
+            res.status(200).json(result.data?.SAP_DATA?.map((item:any) => ({...item, YEAR: item.Z_YEAR})))
         } else {
             res.status(200).json([])
         }
