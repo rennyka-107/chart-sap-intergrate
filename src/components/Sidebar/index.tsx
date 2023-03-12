@@ -52,14 +52,14 @@ const Sidebar = (props: Props) => {
       <AnimatePresence>
         {open ? (
           <motion.div
-            initial={{ width: 0, height: 0 }}
-            animate={{ width: "20vw", height: "auto" }}
-            exit={{ width: 0, height: 0, transition: { delay: 0.7, duration: 1 } }}
-            className="w-[20vw] overflow-x-hidden fixed"
+            initial={{ height: 0, className: "w-[0] overflow-hidden fixed" }}
+            animate={{ height: "auto", className: "md:w-[20vw] w-[100vw] overflow-hidden fixed" }}
+            exit={{ className: "w-[0] overflow-hidden fixed", height: 0, transition: { delay: 0.7, duration: 1 } }}
+            className="md:w-[30vw] xl:w-[20vw] w-[100vw] overflow-hidden fixed"
           >
             <nav className="relative w-[100%] block px-3 top-0 bottom-0 bg-white shadow-xl left-0 flex-row flex-nowrap md:z-0">
-              <div className="flex-col min-h-full flex flex-wrap items-center justify-between w-full mx-auto overflow-y-auto overflow-x-hidden">
-                <div className="bg-gradient-to-tr from-blue-400 via-pink-100 to-cyan-300 flex flex-col items-stretch opacity-100 relative mt-2 mb-2 overflow-y-auto overflow-x-hidden h-auto z-40 flex-1 rounded-xl w-full">
+              <div className="flex-col min-h-full flex flex-wrap items-center justify-between w-full mx-auto overflow-hidden">
+                <div className="bg-gradient-to-tr from-blue-400 via-pink-100 to-cyan-300 flex flex-col items-stretch opacity-100 relative mt-2 mb-2 overflow-hidden h-auto z-40 flex-1 rounded-xl w-full">
                   <div className="md:flex items-center flex-col text-center md:pb-2 text-gray-700 mr-0 inline-flex whitespace-nowrap text-sm uppercase font-bold p-8">
                     <img
                       src="/Unknown.png"
@@ -72,7 +72,7 @@ const Sidebar = (props: Props) => {
                     animate="open"
                     exit="closed"
                     variants={sideVariants}
-                    className="md:flex-col md:min-w-full flex flex-col list-none mt-[2rem]"
+                    className="md:flex-col md:min-w-full flex flex-col list-none mt-[2rem] overflow-hidden"
                   >
                     {ItemsSidebar.map((item: string, idx: number) => (
                       <motion.span
