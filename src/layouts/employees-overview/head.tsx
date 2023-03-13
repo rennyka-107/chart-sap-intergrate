@@ -1,3 +1,4 @@
+import useChartData from "@/src/hooks/useChartData";
 import React from "react";
 
 type Props = {
@@ -11,7 +12,7 @@ const HeadPart = ({ currentYear, setCurrentYear }: Props) => {
   return (
     <div className="flex w-full flex-col md:flex-row justify-between items-center">
       <h1 className="text-[1rem] md:text-[2rem] w-full italic text-blue-500 text-center">
-        Summary
+        Employees Overview
       </h1>
       <div className="border-[1px] border-blue-300 rounded-lg p-5 flex gap-[5px] md:flex-nowrap flex-wrap">
         {ArrayYear.map((item) => (

@@ -49,16 +49,6 @@ const ChartBarPart = ({
               },
             ],
           }}
-          options={
-            {
-              // indexAxis: "y",
-              //   legend: { display: false },
-              //   title: {
-              //     display: true,
-              //     text: "Predicted world population (millions) in 2050",
-              //   },
-            }
-          }
         />
       </div>
     </div>
@@ -100,16 +90,6 @@ const ChartPart = ({ labels, datasets, title }: any) => {
           data={{
             labels,
             datasets,
-            // labels: PIE_CHART.map((item) =>
-            //   (item.DATA + "% " + item.LABEL).toString()
-            // ),
-            // datasets: [
-            //   {
-            //     label: "Population (millions)",
-            //     backgroundColor: PIE_CHART.map((item) => item.COLOR),
-            //     data: PIE_CHART.map((item) => item.DATA),
-            //   },
-            // ],
           }}
           options={{
             aspectRatio: 2,

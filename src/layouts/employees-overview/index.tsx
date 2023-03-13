@@ -1,34 +1,46 @@
-import React, { useState } from "react";
+import useChartData from "@/src/hooks/useChartData";
+import isEmpty from "lodash.isempty";
+import React, { useEffect, useState } from "react";
+import BotChart from "./bot-chart";
 import HeadPart, { ArrayYear } from "./head";
+import Information from "./information";
 import LeftPart from "./left";
 import RightPart from "./right";
+import RightInformation from "./right-information";
+import TopChart from "./top-chart";
 
 type Props = {};
 
 const EmployeesOverview = (props: Props) => {
-  const [currentYear, setCurrentYear] = useState<string>(ArrayYear[0]);
+  const [currentYear, setCurrentYear] = useState<string>("2017");
+  const {
+    getInitialData,
+    overviewHeadcountByPositionFilter,
+    overviewHeadcountByPosition,
+    filterDataByYear,
+  } = useChartData();
+
+  useEffect(() => {
+    getInitialData && getInitialData();
+  }, [getInitialData]);
+
+  useEffect(() => {
+    if (!isEmpty(currentYear) && overviewHeadcountByPosition) filterDataByYear(currentYear);
+  }, [currentYear, overviewHeadcountByPosition]);
+
   return (
     <div>
       <HeadPart currentYear={currentYear} setCurrentYear={setCurrentYear} />
-      <div>
-        
-      </div>
-      <div>
-        <div>
-
+      <div className="flex mt-2">
+        <div className="w-[50vw] md:w-[75vw] flex flex-col">
+          <Information />
+          <TopChart />
         </div>
-        <div>
-
+        <div className="w-[50vw] md:w-[23vw] flex justify-center">
+          <RightInformation />
         </div>
       </div>
-      {/* <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start">
-        <div className="lg:w-[25%] w-[90%]">
-          <LeftPart year={currentYear} />
-        </div>
-        <div className="lg:w-[74%] w-[90%]">
-          <RightPart year={currentYear} />
-        </div>
-      </div> */}
+      <BotChart dataHeadCountByPosition={overviewHeadcountByPositionFilter} />
     </div>
   );
 };

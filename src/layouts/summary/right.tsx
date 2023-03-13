@@ -56,6 +56,7 @@ const ChartPartSickLeave = ({ title, data }: any) => {
             ],
           }}
           options={{
+           
             maintainAspectRatio: false,
             responsive: true,
             scales: {
@@ -97,6 +98,9 @@ const ChartPartAverageScore = ({ title, data }: any) => {
             ],
           }}
           options={{
+            onClick: function(event,element){
+              console.log(element, "log bar")
+            },
             maintainAspectRatio: false,
             responsive: true,
             indexAxis: "y",
