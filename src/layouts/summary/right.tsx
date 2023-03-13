@@ -56,6 +56,7 @@ const ChartPartSickLeave = ({ title, data }: any) => {
             ],
           }}
           options={{
+            maintainAspectRatio: false,
             responsive: true,
             scales: {
               y: {
@@ -96,6 +97,7 @@ const ChartPartAverageScore = ({ title, data }: any) => {
             ],
           }}
           options={{
+            maintainAspectRatio: false,
             responsive: true,
             indexAxis: "y",
             scales: {
@@ -118,7 +120,7 @@ const ChartPartHeadcount = ({ title, data }: any) => {
   return (
     <div className="md:w-[49%] w-full flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
       <p className="font-semibold">{title}</p>
-      <div className="w-full flex justify-center md:min-h-[200px] xl:min-h-[300px]">
+      <div className="w-full flex justify-center md:min-h-[200px] xl:min-h-[400px]">
         <Bar
           data={{
             labels: !isEmpty(data)
@@ -137,6 +139,7 @@ const ChartPartHeadcount = ({ title, data }: any) => {
             ],
           }}
           options={{
+            maintainAspectRatio: false,
             responsive: true,
             indexAxis: "y",
             scales: {
