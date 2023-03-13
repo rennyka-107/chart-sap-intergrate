@@ -1,3 +1,4 @@
+import useLoading from "@/src/hooks/useLoading";
 import useSummaryChartBar, {
   TypeDetailAverageScore,
   TypeDetailHeadcount,
@@ -7,7 +8,9 @@ import isEmpty from "lodash.isempty";
 import React, { useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 
-type Props = {};
+type Props = {
+  year: string;
+};
 
 const BAR_CHART = [
   { MONTH: "January", DATA: 40 },
@@ -152,7 +155,7 @@ const ChartPartHeadcount = ({ title, data }: any) => {
   );
 };
 
-const RightPart = (props: Props) => {
+const RightPart = ({ year }: Props) => {
   const {
     getInitialData,
     sickVocationLeave,
@@ -160,9 +163,10 @@ const RightPart = (props: Props) => {
     headcountByPosition,
     // totalSalaryExpensesByDepartment,
   } = useSummaryChartBar();
+  const { turnOn, turnOff } = useLoading();
   useEffect(() => {
-    getInitialData && getInitialData();
-  }, [getInitialData]);
+    getInitialData && getInitialData(year, turnOn, turnOff, turnOff);
+  }, [getInitialData, year]);
 
   return (
     <div className="flex flex-wrap flex-col md:flex-row justify-around">

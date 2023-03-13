@@ -13,7 +13,7 @@ type StateContract = {
   contractTypeHeadcount: TypeDetailHeadcount[];
   genderTypeHeadcount: TypeDetailHeadcount[];
   ageRangeTypeHeadcount: TypeDetailHeadcount[];
-  getInitialData: () => void;
+  getInitialData: (year: string) => void;
 };
 
 const useContract = create<StateContract>((set) => ({
@@ -21,11 +21,10 @@ const useContract = create<StateContract>((set) => ({
   contractTypeHeadcount: [],
   genderTypeHeadcount: [],
   ageRangeTypeHeadcount: [],
-  getInitialData: async () => {
+  getInitialData: async (year: string) => {
     try {
-      const res = await axios.get(
-        "/api/charts/contract-chart"
-      );
+      const res = await axios.get(`/api/charts/contract-chart?year=${year}`);
+      console.log(res, "res contract")
       if (!isEmpty(res.data)) {
         set((state: StateContract) => ({
           ...state,

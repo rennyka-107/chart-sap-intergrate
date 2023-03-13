@@ -18,6 +18,9 @@ import { AnimatePresence } from "framer-motion";
 import { SWRConfig } from "swr";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useLoading from "@/src/hooks/useLoading";
+import AnimationLoading from "@/src/components/loading/AnimationLoading";
+import { useRouter } from "next/router";
 
 ChartJS.register(
   RadialLinearScale,
@@ -33,6 +36,8 @@ ChartJS.register(
 );
 
 export default function App({ Component, pageProps }: AppProps) {
+  const status = useLoading((state) => state.status);
+  const router = useRouter();
   return (
     <SWRConfig
       value={{
@@ -52,9 +57,23 @@ export default function App({ Component, pageProps }: AppProps) {
         theme="light"
       />
       <AnimatePresence>
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
+        <main
+          className={`m-0 w-full h-full flex flex-col relative ${
+            status ? "opacity-[0.5]" : "opacity-1"
+          }`}
+          key={router.asPath}
+        >
+          {status ? (
+            <div className="w-full h-full flex justify-center items-center absolute z-[1000]">
+              <AnimationLoading />
+            </div>
+          ) : (
+            <></>
+          )}
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </main>
       </AnimatePresence>
     </SWRConfig>
   );

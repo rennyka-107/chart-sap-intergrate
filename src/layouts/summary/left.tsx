@@ -6,7 +6,9 @@ import isEmpty from "lodash.isempty";
 import React, { useEffect } from "react";
 import { Bar, Doughnut } from "react-chartjs-2";
 
-type Props = {};
+type Props = {
+  year: string;
+};
 
 // const PIE_CHART = [
 //   { COLOR: "#41B883", DATA: 40, LABEL: "VueJS" },
@@ -124,7 +126,7 @@ const ChartPart = ({ labels, datasets, title }: any) => {
   );
 };
 
-const LeftPart = (props: Props) => {
+const LeftPart = ({year}: Props) => {
   const {
     detailHeadcount,
     contractTypeHeadcount,
@@ -134,13 +136,13 @@ const LeftPart = (props: Props) => {
   } = useContract();
 
   useEffect(() => {
-    getInitialData && getInitialData();
-  }, [getInitialData]);
+    getInitialData && getInitialData(year);
+  }, [getInitialData, year]);
 
   return (
     <div className="mt-2">
       <InformationPart
-        data={detailHeadcount.map((item) => ({
+        data={(detailHeadcount ?? []).map((item) => ({
           ...item,
           DATA: Number(item.DATA),
         }))}
@@ -155,11 +157,11 @@ const LeftPart = (props: Props) => {
         datasets={[
           {
             label: " ",
-            backgroundColor: contractTypeHeadcount.map(
+            backgroundColor: (contractTypeHeadcount ?? []).map(
               (item) => item.COLOR
               //   Math.floor(Math.random() * 16777215).toString(16)
             ),
-            data: contractTypeHeadcount.map((item) =>
+            data: (contractTypeHeadcount ?? []).map((item) =>
               Number(item.DATA.toString().replace("%", ""))
             ),
           },
@@ -175,15 +177,15 @@ const LeftPart = (props: Props) => {
         datasets={[
           {
             label: " ",
-            backgroundColor: genderTypeHeadcount.map((item) => item.COLOR),
-            data: genderTypeHeadcount.map((item) =>
+            backgroundColor: (genderTypeHeadcount ?? []).map((item) => item.COLOR),
+            data: (genderTypeHeadcount ?? []).map((item) =>
               Number(item.DATA.toString().replace("%", ""))
             ),
           },
         ]}
       />
       <ChartBarPart
-        data={ageRangeTypeHeadcount.map((item) => ({
+        data={(ageRangeTypeHeadcount ?? []).map((item) => ({
           ...item,
           DATA: Number(item.DATA.toString().replace("%", "")),
         }))}

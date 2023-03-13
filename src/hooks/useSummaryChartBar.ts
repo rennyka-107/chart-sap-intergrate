@@ -33,7 +33,12 @@ type State = {
   averageEmployeeScoreByDepartment: TypeDetailAverageScore[];
   headcountByPosition: TypeDetailHeadcount[];
   totalSalaryExpensesByDepartment: TypeDetail[];
-  getInitialData: (year?: string) => void;
+  getInitialData: (
+    year?: string,
+    callback?: () => void,
+    onSuccess?: () => void,
+    onError?: () => void
+  ) => void;
 };
 
 const useSummaryChartBar = create<State>((set) => ({
@@ -41,17 +46,25 @@ const useSummaryChartBar = create<State>((set) => ({
   averageEmployeeScoreByDepartment: [],
   headcountByPosition: [],
   totalSalaryExpensesByDepartment: [],
-  getInitialData: async (year?: string) => {
+  getInitialData: async (
+    year?: string,
+    callback?: () => void,
+    onSuccess?: () => void,
+    onError?: () => void
+  ) => {
     try {
+      callback && callback();
       const resSickVocationLeave = await axios.get(
         `/api/charts/sick-vocation-leave${
           !isEmpty(year) ? "?year=" + year : ""
         }`
       );
       const resAverageEmployeeScoreByDepartment = await axios.get(
-        "/api/charts/point-job"
+        `/api/charts/point-job${!isEmpty(year) ? "?year=" + year : ""}`
       );
-      const resHeadcountByPosition = await axios.get("/api/charts/headcount");
+      const resHeadcountByPosition = await axios.get(
+        `/api/charts/headcount${!isEmpty(year) ? "?year=" + year : ""}`
+      );
       // const resTotalSalaryExpensesByDepartment = await axios.get(
       //   "/api/charts/sick-vocation-leave"
       // );
@@ -74,11 +87,12 @@ const useSummaryChartBar = create<State>((set) => ({
           headcountByPosition: resHeadcountByPosition.data ?? [],
         }));
       }
+      onSuccess && onSuccess();
     } catch (err) {
       console.log(err);
+      onError && onError();
     }
   },
-  //   turnOn: () => set((state: StateLoading) => ({ ...state, status: true })),
 }));
 
 export default useSummaryChartBar;
