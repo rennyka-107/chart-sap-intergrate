@@ -176,7 +176,7 @@ const RightPart = ({ year }: Props) => {
   }, [getInitialData, year]);
 
   return (
-    <div className="flex flex-wrap flex-col md:flex-row justify-around">
+    <div className="flex flex-wrap flex-col md:flex-row justify-between">
       <ChartPartSickLeave
         data={sickVocationLeave}
         title="Sick Leave & Vocation Leave By Year"

@@ -38,7 +38,6 @@ const itemVariants = {
 const Sidebar = (props: Props) => {
   const [open, cycleOpen] = useCycle(false, true);
   const router = useRouter();
-console.log(router.pathname)
   return (
     <div>
       <AnimatePresence>

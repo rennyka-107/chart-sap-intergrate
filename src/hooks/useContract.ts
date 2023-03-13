@@ -24,7 +24,6 @@ const useContract = create<StateContract>((set) => ({
   getInitialData: async (year: string) => {
     try {
       const res = await axios.get(`/api/charts/contract-chart?year=${year}`);
-      console.log(res, "res contract")
       if (!isEmpty(res.data)) {
         set((state: StateContract) => ({
           ...state,

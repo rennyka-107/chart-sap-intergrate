@@ -11,6 +11,7 @@ import { Bar, Doughnut } from "react-chartjs-2";
 
 type Props = {
   dataHeadCountByPosition: { LABEL: string; DATA: number }[];
+  dataHeadCountByDepartment: { LABEL: string; DATA: number }[];
 };
 
 const ChartPartHeadCountByPosition = ({ title, data }: any) => {
@@ -50,41 +51,37 @@ const ChartPartHeadCountByPosition = ({ title, data }: any) => {
   );
 };
 
-const ChartPartHeadcount = ({ title, data }: any) => {
+const ChartPartHeadcountByDepartment = ({ title, data }: any) => {
   return (
     <div className="md:w-[49%] w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
       <p className="font-semibold">{title}</p>
       <div className="w-full flex justify-center md:min-h-[200px] xl:min-h-[400px]">
-        <Bar
+      <Bar
           data={{
             labels: !isEmpty(data)
-              ? data.map((item: TypeDetailHeadcount) => item.Z_POSITION)
+              ? data.map((item: { LABEL: string; DATA: number }) => item.LABEL)
               : [],
             datasets: [
               {
                 label: "Headcount",
                 backgroundColor: !isEmpty(data)
-                  ? data.map(() => "#F06292")
+                  ? data.map(() => "#3e95cd")
                   : [],
                 data: !isEmpty(data)
-                  ? data.map((item: TypeDetailHeadcount) => item.HEADCOUNT)
+                  ? data.map(
+                      (item: { LABEL: string; DATA: number }) => item.DATA
+                    )
                   : [],
               },
             ],
           }}
           options={{
+            // onClick: function (event, element) {
+            //   console.log(element, "log bar");
+            // },
+            indexAxis: "y",
             maintainAspectRatio: false,
             responsive: true,
-            indexAxis: "y",
-            scales: {
-              y: {
-                // stackWeight: 0.5,
-                ticks: {
-                  // labelOffset: 100
-                  autoSkip: false,
-                },
-              },
-            },
           }}
         />
       </div>
@@ -92,7 +89,7 @@ const ChartPartHeadcount = ({ title, data }: any) => {
   );
 };
 
-const BotChart = ({ dataHeadCountByPosition }: Props) => {
+const BotChart = ({ dataHeadCountByPosition,dataHeadCountByDepartment }: Props) => {
   const {
     getInitialData,
     headcountByPosition,
@@ -112,9 +109,9 @@ const BotChart = ({ dataHeadCountByPosition }: Props) => {
         data={dataHeadCountByPosition}
         title="Headcount By Position"
       />
-      <ChartPartHeadcount
-        data={headcountByPosition}
-        title="Headcount By Position"
+      <ChartPartHeadcountByDepartment
+        data={dataHeadCountByDepartment}
+        title="Headcount By Department"
       />
     </div>
   );

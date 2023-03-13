@@ -7,78 +7,36 @@ type Data = any;
 
 const ArrayMapDepartments = [
   {
-    label: "CS",
-    description: "Customer service",
+    label: "SALES",
+    description: "Sales",
   },
   {
-    label: "MS",
-    description: "Marketing specialist",
+    label: "PRODUCTION",
+    description: "Production",
   },
   {
-    label: "HRP",
-    description: "HR Personnel",
+    label: "ADMINOFFICES",
+    description: "Admin Offices",
   },
   {
-    label: "BA",
-    description: "Business analyst",
+    label: "EXECUTIVE",
+    description: "Executive Office",
   },
   {
-    label: "ACC",
-    description: "IT Management",
+    label: "ITIS",
+    description: "IT/IS",
   },
   {
-    label: "HRM",
-    description: "Accountant",
+    label: "SE",
+    description: "Software Engineering",
   },
   {
-    label: "ITM",
-    description: "HR Manager",
-  },
-  {
-    label: "ITS",
-    description: "BI Consultant",
-  },
-  {
-    label: "MM",
-    description: "IT Support",
-  },
-  {
-    label: "BIC",
-    description: "Marketing manager",
-  },
-  {
-    label: "COO",
-    description: "COO",
-  },
-  {
-    label: "FM",
-    description: "Finance Analyst",
-  },
-  {
-    label: "CEO",
-    description: "CEO",
-  },
-  {
-    label: "CFO",
-    description: "CFO",
-  },
-  {
-    label: "CIO",
-    description: "CIO",
-  },
-  {
-    label: "CMO",
-    description: "CMO",
-  },
-  {
-    label: "CTO",
-    description: "CTO",
-  },
-  {
-    label: "DA",
-    description: "Data Analyst",
+    label: "HR",
+    description: "Human Resources",
   },
 ];
+
+// http://win-saptest.sphinxjsc.com:8000/sap/opu/odata/sap/ZGS_EHCBY_DEPT_SRV/EmpbydeptSet?$format=json
 
 export default async function handler(
   req: NextApiRequest,
@@ -86,7 +44,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const result = await axios.get(
-      `http://45.117.82.171:8000/sap/opu/odata/sap/ZGS_EHCBY_POS_SRV/EmpbyposSet?$format=json`,
+      `http://45.117.82.171:8000/sap/opu/odata/sap/ZGS_EHCBY_DEPT_SRV/EmpbydeptSet?$format=json`,
       {
         headers: {
           Authorization: "Basic dnVvbmc6dHVlbWluaDQ=",

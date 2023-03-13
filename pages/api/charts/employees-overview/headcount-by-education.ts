@@ -7,78 +7,28 @@ type Data = any;
 
 const ArrayMapDepartments = [
   {
-    label: "CS",
-    description: "Customer service",
+    label: "BACHELOR",
+    description: "Bachelor Degree",
   },
   {
-    label: "MS",
-    description: "Marketing specialist",
+    label: "DIPLOMA",
+    description: "Diploma",
   },
   {
-    label: "HRP",
-    description: "HR Personnel",
+    label: "MASTER",
+    description: "Master Degree",
   },
   {
-    label: "BA",
-    description: "Business analyst",
+    label: "CERTIFICATE1",
+    description: "Certificate 1",
   },
   {
-    label: "ACC",
-    description: "IT Management",
-  },
-  {
-    label: "HRM",
-    description: "Accountant",
-  },
-  {
-    label: "ITM",
-    description: "HR Manager",
-  },
-  {
-    label: "ITS",
-    description: "BI Consultant",
-  },
-  {
-    label: "MM",
-    description: "IT Support",
-  },
-  {
-    label: "BIC",
-    description: "Marketing manager",
-  },
-  {
-    label: "COO",
-    description: "COO",
-  },
-  {
-    label: "FM",
-    description: "Finance Analyst",
-  },
-  {
-    label: "CEO",
-    description: "CEO",
-  },
-  {
-    label: "CFO",
-    description: "CFO",
-  },
-  {
-    label: "CIO",
-    description: "CIO",
-  },
-  {
-    label: "CMO",
-    description: "CMO",
-  },
-  {
-    label: "CTO",
-    description: "CTO",
-  },
-  {
-    label: "DA",
-    description: "Data Analyst",
+    label: "CERTIFICATE2",
+    description: "Certificate 2",
   },
 ];
+
+// http://win-saptest.sphinxjsc.com:8000/sap/opu/odata/sap/ZGW_HEAD_EDU_SRV/HEADSet?$format=json
 
 export default async function handler(
   req: NextApiRequest,
@@ -86,7 +36,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const result = await axios.get(
-      `http://45.117.82.171:8000/sap/opu/odata/sap/ZGS_EHCBY_POS_SRV/EmpbyposSet?$format=json`,
+      `http://45.117.82.171:8000/sap/opu/odata/sap/ZGW_HEAD_EDU_SRV/HEADSet?$format=json`,
       {
         headers: {
           Authorization: "Basic dnVvbmc6dHVlbWluaDQ=",

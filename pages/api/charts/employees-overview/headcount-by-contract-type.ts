@@ -7,78 +7,16 @@ type Data = any;
 
 const ArrayMapDepartments = [
   {
-    label: "CS",
-    description: "Customer service",
+    label: "CONTRACTTEMP",
+    description: "Contract Temp",
   },
   {
-    label: "MS",
-    description: "Marketing specialist",
-  },
-  {
-    label: "HRP",
-    description: "HR Personnel",
-  },
-  {
-    label: "BA",
-    description: "Business analyst",
-  },
-  {
-    label: "ACC",
-    description: "IT Management",
-  },
-  {
-    label: "HRM",
-    description: "Accountant",
-  },
-  {
-    label: "ITM",
-    description: "HR Manager",
-  },
-  {
-    label: "ITS",
-    description: "BI Consultant",
-  },
-  {
-    label: "MM",
-    description: "IT Support",
-  },
-  {
-    label: "BIC",
-    description: "Marketing manager",
-  },
-  {
-    label: "COO",
-    description: "COO",
-  },
-  {
-    label: "FM",
-    description: "Finance Analyst",
-  },
-  {
-    label: "CEO",
-    description: "CEO",
-  },
-  {
-    label: "CFO",
-    description: "CFO",
-  },
-  {
-    label: "CIO",
-    description: "CIO",
-  },
-  {
-    label: "CMO",
-    description: "CMO",
-  },
-  {
-    label: "CTO",
-    description: "CTO",
-  },
-  {
-    label: "DA",
-    description: "Data Analyst",
+    label: "ZPERMANENT",
+    description: "Permanent",
   },
 ];
+
+// http://win-saptest.sphinxjsc.com:8000/sap/opu/odata/sap/ZGS_EHCBY_CTTY_SRV/HEADCOUNTSet?$format=json
 
 export default async function handler(
   req: NextApiRequest,
@@ -86,7 +24,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const result = await axios.get(
-      `http://45.117.82.171:8000/sap/opu/odata/sap/ZGS_EHCBY_POS_SRV/EmpbyposSet?$format=json`,
+      `http://45.117.82.171:8000/sap/opu/odata/sap/ZGS_EHCBY_CTTY_SRV/HEADCOUNTSet?$format=json`,
       {
         headers: {
           Authorization: "Basic dnVvbmc6dHVlbWluaDQ=",
@@ -100,7 +38,7 @@ export default async function handler(
         const findItem = ArrayMapDepartments.find(
           (item: any) => item.label === property.toLocaleUpperCase()
         );
-        if (property !== "Zyear" && property !== "__metadata") {
+        if (property === "Zpermanent" || property === "ContractTemp") {
           arrData.push({
             DATA: obj[property],
             LABEL: !isEmpty(findItem) ? findItem?.description : property,
