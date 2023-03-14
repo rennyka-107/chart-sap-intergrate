@@ -11,21 +11,14 @@ const Summary = (props: Props) => {
   const [currentYear, setCurrentYear] = useState<string>(ArrayYear[0]);
   const {
     getInitialData,
-    overviewHeadcountByPositionFilter,
     overviewHeadcountByPosition,
     filterDataByYear,
     overviewHeadcountByDepartment,
-    overviewHeadcountByDepartmentFilter,
     overviewHeadcountByAgeRange,
-    overviewHeadcountByAgeRangeFilter,
     overviewHeadcountByEducation,
-    overviewHeadcountByEducationFilter,
     overviewHeadcountByContractType,
-    overviewHeadcountByContractTypeFilter,
     overviewHeadcountByHire,
-    overviewHeadcountByHireFilter,
     overviewHeadcountDemographic,
-    overviewHeadcountDemographicFilter,
   } = useChartData();
 
   useEffect(() => {

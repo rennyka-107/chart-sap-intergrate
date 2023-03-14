@@ -10,7 +10,7 @@ type Props = {};
 const ItemsSidebar = [
   {label: "Summary", path: "/"},
   {label: "Employees Overview", path: "/employees-overview"},
-  {label: "Departments", path: "/departments"},
+  {label: "Training", path: "/training"},
 ];
 
 const sideVariants = {
