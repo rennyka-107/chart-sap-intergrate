@@ -1,3 +1,4 @@
+import useChartData from "@/src/hooks/useChartData";
 import useLoading from "@/src/hooks/useLoading";
 import useSummaryChartBar, {
   TypeDetailAverageScore,
@@ -56,7 +57,6 @@ const ChartPartSickLeave = ({ title, data }: any) => {
             ],
           }}
           options={{
-           
             maintainAspectRatio: false,
             responsive: true,
             scales: {
@@ -98,8 +98,8 @@ const ChartPartAverageScore = ({ title, data }: any) => {
             ],
           }}
           options={{
-            onClick: function(event,element){
-              console.log(element, "log bar")
+            onClick: function (event, element) {
+              console.log(element, "log bar");
             },
             maintainAspectRatio: false,
             responsive: true,
@@ -128,7 +128,9 @@ const ChartPartHeadcount = ({ title, data }: any) => {
         <Bar
           data={{
             labels: !isEmpty(data)
-              ? data.map((item: TypeDetailHeadcount) => item.Z_POSITION)
+              ? data.map(
+                  (item: { LABEL: string; DATA: number | string }) => item.LABEL
+                )
               : [],
             datasets: [
               {
@@ -137,7 +139,10 @@ const ChartPartHeadcount = ({ title, data }: any) => {
                   ? data.map(() => "#F06292")
                   : [],
                 data: !isEmpty(data)
-                  ? data.map((item: TypeDetailHeadcount) => item.HEADCOUNT)
+                  ? data.map(
+                      (item: { LABEL: string; DATA: number | string }) =>
+                        item.DATA
+                    )
                   : [],
               },
             ],
@@ -146,15 +151,6 @@ const ChartPartHeadcount = ({ title, data }: any) => {
             maintainAspectRatio: false,
             responsive: true,
             indexAxis: "y",
-            scales: {
-              y: {
-                // stackWeight: 0.5,
-                ticks: {
-                  // labelOffset: 100
-                  autoSkip: false,
-                },
-              },
-            },
           }}
         />
       </div>
@@ -163,6 +159,7 @@ const ChartPartHeadcount = ({ title, data }: any) => {
 };
 
 const RightPart = ({ year }: Props) => {
+  const { overviewHeadcountByPositionFilter } = useChartData();
   const {
     getInitialData,
     sickVocationLeave,
@@ -186,7 +183,7 @@ const RightPart = ({ year }: Props) => {
         title="Average Employee Score By Department"
       />
       <ChartPartHeadcount
-        data={headcountByPosition}
+        data={overviewHeadcountByPositionFilter}
         title="Headcount By Position"
       />
       {/* <ChartPartSickLeave title="Total Salary Expenses By Department" /> */}

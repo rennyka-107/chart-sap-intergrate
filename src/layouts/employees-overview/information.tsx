@@ -14,7 +14,7 @@ const Information = ({ dataHeadCountByHire }: Props) => {
             className="px-[1rem] md:px-[2rem] flex flex-col items-center border-[1px] border-blue-500 rounded-md p-3 shadow-lg shadow-blue-200"
           >
             <p className="text-[1.5rem]">{item.LABEL}</p>
-            <p>{item.DATA}%</p>
+            <p>{item.DATA}{item.LABEL === "Turnover Rate" ? "%" : ""}</p>
           </div>
         )
       )}

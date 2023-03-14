@@ -1,6 +1,7 @@
 import User from "@/src/components/icons/User";
 import UserPlus from "@/src/components/icons/UserPlus";
 import UserTerminate from "@/src/components/icons/UserTerminate";
+import useChartData from "@/src/hooks/useChartData";
 import useContract from "@/src/hooks/useContract";
 import isEmpty from "lodash.isempty";
 import React, { useEffect } from "react";
@@ -41,7 +42,7 @@ const ChartBarPart = ({
             labels: data.map((item) => item.LABEL),
             datasets: [
               {
-                label: "People",
+                label: "Headcount",
                 backgroundColor: data.map((item) => "#3e95cd"),
 
                 // data: BAR_CHART.map((item) => item.DATA),
@@ -126,42 +127,94 @@ const ChartPart = ({ labels, datasets, title }: any) => {
   );
 };
 
-const LeftPart = ({year}: Props) => {
-  const {
-    detailHeadcount,
-    contractTypeHeadcount,
-    genderTypeHeadcount,
-    ageRangeTypeHeadcount,
-    getInitialData,
-  } = useContract();
+function getTotal(
+  arr: { LABEL: string; DATA: number | string }[],
+  { LABEL, DATA }: { LABEL: string; DATA: number | string }
+) {
+  let result = 0;
+  for (let i = 0; i < arr.length; i++) {
+    result += Number(arr[i]["DATA"]);
+  }
+  if (result !== 0) {
+    return Math.round((10000 * Number(DATA)) / result) / 100 + "%";
+  }
+  return "0%";
+}
 
-  useEffect(() => {
-    getInitialData && getInitialData(year);
-  }, [getInitialData, year]);
+const LeftPart = ({ year }: Props) => {
+  // const {
+  //   detailHeadcount,
+  //   contractTypeHeadcount,
+  //   genderTypeHeadcount,
+  //   ageRangeTypeHeadcount,
+  //   getInitialData,
+  // } = useContract();
+
+  // useEffect(() => {
+  //   getInitialData && getInitialData(year);
+  // }, [getInitialData, year]);
+  const {
+    getInitialData,
+    overviewHeadcountByPositionFilter,
+    overviewHeadcountByPosition,
+    filterDataByYear,
+    overviewHeadcountByDepartment,
+    overviewHeadcountByDepartmentFilter,
+    overviewHeadcountByAgeRange,
+    overviewHeadcountByAgeRangeFilter,
+    overviewHeadcountByEducation,
+    overviewHeadcountByEducationFilter,
+    overviewHeadcountByContractType,
+    overviewHeadcountByContractTypeFilter,
+    overviewHeadcountByHire,
+    overviewHeadcountByHireFilter,
+    overviewHeadcountDemographic,
+    overviewHeadcountDemographicFilter,
+  } = useChartData();
 
   return (
     <div className="mt-2">
       <InformationPart
-        data={(detailHeadcount ?? []).map((item) => ({
-          ...item,
-          DATA: Number(item.DATA),
-        }))}
+        data={
+          !isEmpty(overviewHeadcountByHireFilter)
+            ? overviewHeadcountByHireFilter
+                .filter(
+                  (item: { LABEL: string; DATA: string | number }) =>
+                    item.LABEL !== "Turnover Rate"
+                )
+                .sort((a, b) => {
+                  if (a.LABEL.toUpperCase() < b.LABEL.toUpperCase()) {
+                    return -1;
+                  }
+                  if (a.LABEL.toUpperCase() > b.LABEL.toUpperCase()) {
+                    return 1;
+                  }
+                  return 0;
+                })
+            : []
+        }
       />
       <ChartPart
         title="Headcount by Contract Type"
         labels={
-          !isEmpty(contractTypeHeadcount)
-            ? contractTypeHeadcount.map((item) => item.LABEL)
+          !isEmpty(overviewHeadcountByContractTypeFilter)
+            ? overviewHeadcountByContractTypeFilter.map(
+                (item) =>
+                  `${
+                    getTotal(overviewHeadcountByContractTypeFilter, item) +
+                    " " +
+                    item.LABEL
+                  }`
+              )
             : []
         }
         datasets={[
           {
-            label: " ",
-            backgroundColor: (contractTypeHeadcount ?? []).map(
-              (item) => item.COLOR
-              //   Math.floor(Math.random() * 16777215).toString(16)
+            label: "Headcount",
+            backgroundColor: (overviewHeadcountByContractTypeFilter ?? []).map(
+              (item) => "#" + Math.floor(Math.random() * 16777215).toString(16)
             ),
-            data: (contractTypeHeadcount ?? []).map((item) =>
+            data: (overviewHeadcountByContractTypeFilter ?? []).map((item) =>
               Number(item.DATA.toString().replace("%", ""))
             ),
           },
@@ -170,26 +223,49 @@ const LeftPart = ({year}: Props) => {
       <ChartPart
         title="Headcount by Gender"
         labels={
-          !isEmpty(genderTypeHeadcount)
-            ? genderTypeHeadcount.map((item) => item.LABEL)
+          !isEmpty(overviewHeadcountDemographicFilter)
+            ? overviewHeadcountDemographicFilter
+                ?.filter(
+                  (item: { LABEL: string; DATA: string | number }) =>
+                    item.LABEL !== "Avg. Age"
+                )
+                ?.map(
+                  (item) =>
+                    `${
+                      getTotal(
+                        overviewHeadcountDemographicFilter.filter(
+                          (item: { LABEL: string; DATA: string | number }) =>
+                            item.LABEL !== "Avg. Age"
+                        ),
+                        item
+                      ) +
+                      " " +
+                      item.LABEL
+                    }`
+                )
             : []
         }
         datasets={[
           {
-            label: " ",
-            backgroundColor: (genderTypeHeadcount ?? []).map((item) => item.COLOR),
-            data: (genderTypeHeadcount ?? []).map((item) =>
-              Number(item.DATA.toString().replace("%", ""))
+            label: "Headcount",
+            backgroundColor: (
+              overviewHeadcountDemographicFilter.filter(
+                (item: { LABEL: string; DATA: string | number }) =>
+                  item.LABEL !== "Avg. Age"
+              ) ?? []
+            ).map(
+              (item) => "#" + Math.floor(Math.random() * 16777215).toString(16)
             ),
+            data: (overviewHeadcountDemographicFilter ?? [])
+              ?.filter(
+                (item: { LABEL: string; DATA: string | number }) =>
+                  item.LABEL !== "Avg. Age"
+              )
+              ?.map((item) => Number(item.DATA.toString().replace("%", ""))),
           },
         ]}
       />
-      <ChartBarPart
-        data={(ageRangeTypeHeadcount ?? []).map((item) => ({
-          ...item,
-          DATA: Number(item.DATA.toString().replace("%", "")),
-        }))}
-      />
+      <ChartBarPart data={overviewHeadcountByAgeRangeFilter ?? []} />
     </div>
   );
 };

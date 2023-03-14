@@ -28,7 +28,7 @@ const ChartPartHeadCountByPosition = ({ title, data }: any) => {
               {
                 label: "Headcount",
                 backgroundColor: !isEmpty(data)
-                  ? data.map(() => "#3e95cd")
+                  ? data.map(() => "#f86749")
                   : [],
                 data: !isEmpty(data)
                   ? data.map(
@@ -65,7 +65,7 @@ const ChartPartHeadcountByDepartment = ({ title, data }: any) => {
               {
                 label: "Headcount",
                 backgroundColor: !isEmpty(data)
-                  ? data.map(() => "#3e95cd")
+                  ? data.map(() => "#76eec6")
                   : [],
                 data: !isEmpty(data)
                   ? data.map(
