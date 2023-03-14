@@ -9,7 +9,7 @@ type Props = {
 const RightInformation = ({ dataHeadcountDemographic }: Props) => {
   return (
     <div className="w-full flex flex-col items-center border border-blue-400 rounded-md">
-      <p className="text-[1.2rem] py:-[1rem] md:py-[2rem] italic font-semibold">
+      <p className="text-[1.2rem] py:-[1rem] lg:py-[2rem] italic font-semibold">
         Demographic
       </p>
       <hr className="w-full" />

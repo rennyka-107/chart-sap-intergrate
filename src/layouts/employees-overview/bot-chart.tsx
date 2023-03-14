@@ -16,9 +16,9 @@ type Props = {
 
 const ChartPartHeadCountByPosition = ({ title, data }: any) => {
   return (
-    <div className="md:w-[49%] w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
+    <div className="lg:w-[49%] w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
       <p className="font-semibold">{title}</p>
-      <div className="w-full flex justify-center md:min-h-[200px] xl:min-h-[300px]">
+      <div className="w-full flex justify-center lg:min-h-[200px] xl:min-h-[300px]">
         <Bar
           data={{
             labels: !isEmpty(data)
@@ -53,9 +53,9 @@ const ChartPartHeadCountByPosition = ({ title, data }: any) => {
 
 const ChartPartHeadcountByDepartment = ({ title, data }: any) => {
   return (
-    <div className="md:w-[49%] w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
+    <div className="lg:w-[49%] w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
       <p className="font-semibold">{title}</p>
-      <div className="w-full flex justify-center md:min-h-[200px] xl:min-h-[400px]">
+      <div className="w-full flex justify-center lg:min-h-[200px] xl:min-h-[400px]">
       <Bar
           data={{
             labels: !isEmpty(data)
@@ -90,21 +90,8 @@ const ChartPartHeadcountByDepartment = ({ title, data }: any) => {
 };
 
 const BotChart = ({ dataHeadCountByPosition,dataHeadCountByDepartment }: Props) => {
-  const {
-    getInitialData,
-    headcountByPosition,
-  } = useSummaryChartBar();
-  const { turnOn, turnOff } = useLoading();
-  const { getInitialData: getInitPie } = useContract();
-
-  useEffect(() => {
-    getInitPie && getInitPie("2017");
-  }, [getInitPie]);
-  useEffect(() => {
-    getInitialData && getInitialData("2017", turnOn, turnOff, turnOff);
-  }, [getInitialData]);
   return (
-    <div className="flex flex-wrap flex-col md:flex-row justify-around">
+    <div className="flex flex-wrap flex-col lg:flex-row justify-around">
       <ChartPartHeadCountByPosition
         data={dataHeadCountByPosition}
         title="Headcount By Position"

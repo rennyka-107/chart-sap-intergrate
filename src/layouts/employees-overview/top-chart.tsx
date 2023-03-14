@@ -17,9 +17,9 @@ type Props = {
 
 const ChartPartHeadcountByEducation = ({ title, data }: any) => {
   return (
-    <div className="md:w-[33%] w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
+    <div className="lg:w-[33%] w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
       <p className="font-semibold">{title}</p>
-      <div className="w-full flex justify-center md:min-h-[200px] xl:min-h-[300px]">
+      <div className="w-full flex justify-center lg:min-h-[200px] xl:min-h-[300px]">
         <Bar
           data={{
             labels: !isEmpty(data)
@@ -52,9 +52,9 @@ const ChartPartHeadcountByEducation = ({ title, data }: any) => {
 
 const ChartPartHeadcountByAgeRange = ({ title, data }: any) => {
   return (
-    <div className="md:w-[33%] w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
+    <div className="lg:w-[33%] w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
       <p className="font-semibold">{title}</p>
-      <div className="w-full flex justify-center md:min-h-[200px] xl:min-h-[400px]">
+      <div className="w-full flex justify-center lg:min-h-[200px] xl:min-h-[400px]">
         <Bar
           data={{
             labels: !isEmpty(data)
@@ -86,7 +86,7 @@ const ChartPartHeadcountByAgeRange = ({ title, data }: any) => {
 
 const ChartPart = ({ labels, datasets, title }: any) => {
   return (
-    <div className="md:w-[33%] w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-1 mt-2 items-center shadow-lg shadow-blue-200">
+    <div className="lg:w-[33%] w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-1 mt-2 items-center shadow-lg shadow-blue-200">
       <p className="m-0 p-0 font-semibold">{title}</p>
       <div className="w-120px flex justify-center">
         <Doughnut
@@ -114,17 +114,6 @@ const TopChart = ({
   dataHeadCountByEducation,
   dataHeadCountByContractType,
 }: Props) => {
-  const { getInitialData } = useSummaryChartBar();
-  const { turnOn, turnOff } = useLoading();
-  const { getInitialData: getInitPie } = useContract();
-
-  useEffect(() => {
-    getInitPie && getInitPie("2017");
-  }, [getInitPie]);
-  useEffect(() => {
-    getInitialData && getInitialData("2017", turnOn, turnOff, turnOff);
-  }, [getInitialData]);
-
   function getTotal(arr: { LABEL: string; DATA: number | string }[], {LABEL,DATA  }: {LABEL: string, DATA: number | string}) {
     let result = 0;
     for (let i = 0; i < arr.length; i++) {
@@ -136,7 +125,7 @@ const TopChart = ({
     return "0%";
   }
   return (
-    <div className="flex flex-wrap flex-col md:flex-row justify-between">
+    <div className="flex flex-wrap flex-col lg:flex-row justify-between">
       <ChartPartHeadcountByEducation
         data={dataHeadCountByEducation.sort((a, b) => b.DATA - a.DATA)}
         title="Headcount By Education"
