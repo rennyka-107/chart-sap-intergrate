@@ -1,4 +1,5 @@
 import useChartData from "@/src/hooks/useChartData";
+import useLoading from "@/src/hooks/useLoading";
 import isEmpty from "lodash.isempty";
 import React, { useEffect, useState } from "react";
 import BotChart from "./bot-chart";
@@ -29,7 +30,6 @@ const EmployeesOverview = (props: Props) => {
     overviewHeadcountDemographic,
     overviewHeadcountDemographicFilter,
     summaryAverageScore,
-    summaryAverageScoreFilter
   } = useChartData();
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const EmployeesOverview = (props: Props) => {
       (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByContractType)) ||
       (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByHire)) ||
       (!isEmpty(currentYear) && !isEmpty(overviewHeadcountDemographic)) ||
-      (!isEmpty(currentYear) && !isEmpty(summaryAverageScore)) 
+      (!isEmpty(currentYear) && !isEmpty(summaryAverageScore))
     )
       filterDataByYear(currentYear);
   }, [
@@ -57,11 +57,11 @@ const EmployeesOverview = (props: Props) => {
     overviewHeadcountByContractType,
     overviewHeadcountByHire,
     overviewHeadcountDemographic,
-    summaryAverageScore
+    summaryAverageScore,
   ]);
 
   return (
-    <div >
+    <div>
       <HeadPart currentYear={currentYear} setCurrentYear={setCurrentYear} />
       <div className="w-[100%] flex flex-col gap-[1rem] lg:gap-0 lg:flex-row mt-2 justify-between">
         <div className="w-[100%] lg:w-[77%] flex flex-col">
@@ -73,7 +73,9 @@ const EmployeesOverview = (props: Props) => {
           />
         </div>
         <div className="w-[100%] lg:w-[20%] flex justify-center">
-          <RightInformation dataHeadcountDemographic={overviewHeadcountDemographicFilter} />
+          <RightInformation
+            dataHeadcountDemographic={overviewHeadcountDemographicFilter}
+          />
         </div>
       </div>
       <BotChart

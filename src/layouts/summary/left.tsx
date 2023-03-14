@@ -142,33 +142,10 @@ function getTotal(
 }
 
 const LeftPart = ({ year }: Props) => {
-  // const {
-  //   detailHeadcount,
-  //   contractTypeHeadcount,
-  //   genderTypeHeadcount,
-  //   ageRangeTypeHeadcount,
-  //   getInitialData,
-  // } = useContract();
-
-  // useEffect(() => {
-  //   getInitialData && getInitialData(year);
-  // }, [getInitialData, year]);
   const {
-    getInitialData,
-    overviewHeadcountByPositionFilter,
-    overviewHeadcountByPosition,
-    filterDataByYear,
-    overviewHeadcountByDepartment,
-    overviewHeadcountByDepartmentFilter,
-    overviewHeadcountByAgeRange,
     overviewHeadcountByAgeRangeFilter,
-    overviewHeadcountByEducation,
-    overviewHeadcountByEducationFilter,
-    overviewHeadcountByContractType,
     overviewHeadcountByContractTypeFilter,
-    overviewHeadcountByHire,
     overviewHeadcountByHireFilter,
-    overviewHeadcountDemographic,
     overviewHeadcountDemographicFilter,
   } = useChartData();
 

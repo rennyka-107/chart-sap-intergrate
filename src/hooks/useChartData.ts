@@ -21,7 +21,7 @@ type StateContract = {
   contractTypeHeadcount: TypeDetailHeadcount[];
   genderTypeHeadcount: TypeDetailHeadcount[];
   ageRangeTypeHeadcount: TypeDetailHeadcount[];
-  getInitialData: () => void;
+  getInitialData: (turnLoading?: () => void, offLoading?: () => void) => void;
   filterDataByYear: (year: string) => void;
   //headcount by position
   overviewHeadcountByPosition: TypeOVHeadCountByPosition[];
@@ -157,7 +157,8 @@ const useChartData = create<StateContract>((set) => ({
   trainingDepartmentFilter: [],
   trainingDepartmentDataAll: [],
   trainingCalTotal: [],
-  getInitialData: async () => {
+  getInitialData: async (turnLoading, offLoading) => {
+    turnLoading && turnLoading();
     try {
       const res1 = await axios.get(
         `/api/charts/employees-overview/headcount-by-position`
@@ -268,7 +269,9 @@ const useChartData = create<StateContract>((set) => ({
           ? res14.data?.dataAll
           : [],
       }));
+      offLoading && offLoading()
     } catch (err) {
+      offLoading && offLoading()
       console.log(err);
     }
   },

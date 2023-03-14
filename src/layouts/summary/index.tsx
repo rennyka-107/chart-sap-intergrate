@@ -1,4 +1,5 @@
 import useChartData from "@/src/hooks/useChartData";
+import useLoading from "@/src/hooks/useLoading";
 import isEmpty from "lodash.isempty";
 import React, { useEffect, useState } from "react";
 import HeadPart from "./head";
@@ -9,6 +10,7 @@ type Props = {};
 
 const Summary = (props: Props) => {
   const [currentYear, setCurrentYear] = useState<string>("");
+  const {turnOff, turnOn} = useLoading();
   const {
     getInitialData,
     overviewHeadcountByPosition,
@@ -25,7 +27,7 @@ const Summary = (props: Props) => {
   } = useChartData();
 
   useEffect(() => {
-    getInitialData && getInitialData();
+    getInitialData && getInitialData(turnOn, turnOff);
   }, [getInitialData]);
 
   useEffect(() => {

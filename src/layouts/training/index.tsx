@@ -1,4 +1,5 @@
 import useChartData from "@/src/hooks/useChartData";
+import useLoading from "@/src/hooks/useLoading";
 import isEmpty from "lodash.isempty";
 import React, { useEffect, useState } from "react";
 import FirstColumn from "./first-column";
