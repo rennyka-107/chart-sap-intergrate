@@ -61,10 +61,10 @@ const EmployeesOverview = (props: Props) => {
   ]);
 
   return (
-    <div className="w-[100vw]">
+    <div >
       <HeadPart currentYear={currentYear} setCurrentYear={setCurrentYear} />
-      <div className="flex flex-col gap-[1rem] lg:gap-0 lg:flex-row mt-2 justify-between">
-        <div className="w-[100vw] lg:w-[77vw] flex flex-col">
+      <div className="w-[100%] flex flex-col gap-[1rem] lg:gap-0 lg:flex-row mt-2 justify-between">
+        <div className="w-[100%] lg:w-[77%] flex flex-col">
           <Information dataHeadCountByHire={overviewHeadcountByHireFilter} />
           <TopChart
             dataHeadCountByAgeRange={overviewHeadcountByAgeRangeFilter}
@@ -72,7 +72,7 @@ const EmployeesOverview = (props: Props) => {
             dataHeadCountByContractType={overviewHeadcountByContractTypeFilter}
           />
         </div>
-        <div className="w-[100vw] lg:w-[20vw] flex justify-center">
+        <div className="w-[100%] lg:w-[20%] flex justify-center">
           <RightInformation dataHeadcountDemographic={overviewHeadcountDemographicFilter} />
         </div>
       </div>

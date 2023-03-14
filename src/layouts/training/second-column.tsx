@@ -94,7 +94,7 @@ const InformationPart = ({
     <div className="w-full md:w-[49%] flex flex-col gap-[5px]">
       {!isEmpty(arrayData) ? (
         arrayData.map((item) => (
-          <div className="w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-5 mt-2 items-center shadow-lg shadow-blue-200">
+          <div key={item.LABEL} className="w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-5 mt-2 items-center shadow-lg shadow-blue-200">
             <p className="text-[1.5rem]">{item.LABEL}</p>
             <p>{Math.round(100 * Number(item.DATA)) / 100}%</p>
           </div>
