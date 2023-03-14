@@ -23,7 +23,11 @@ const EmployeesOverview = (props: Props) => {
     overviewHeadcountByEducation,
     overviewHeadcountByEducationFilter,
     overviewHeadcountByContractType,
-    overviewHeadcountByContractTypeFilter
+    overviewHeadcountByContractTypeFilter,
+    overviewHeadcountByHire,
+    overviewHeadcountByHireFilter,
+    overviewHeadcountDemographic,
+    overviewHeadcountDemographicFilter
   } = useChartData();
 
   useEffect(() => {
@@ -36,7 +40,9 @@ const EmployeesOverview = (props: Props) => {
       (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByDepartment)) ||
       (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByAgeRange)) ||
       (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByEducation)) ||
-      (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByContractType))
+      (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByContractType)) ||
+      (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByHire)) ||
+      (!isEmpty(currentYear) && !isEmpty(overviewHeadcountDemographic)) 
     )
       filterDataByYear(currentYear);
   }, [
@@ -45,23 +51,25 @@ const EmployeesOverview = (props: Props) => {
     overviewHeadcountByDepartment,
     overviewHeadcountByAgeRange,
     overviewHeadcountByEducation,
-    overviewHeadcountByContractType
+    overviewHeadcountByContractType,
+    overviewHeadcountByHire,
+    overviewHeadcountDemographic,
   ]);
 
   return (
     <div>
       <HeadPart currentYear={currentYear} setCurrentYear={setCurrentYear} />
-      <div className="flex mt-2">
-        <div className="w-[50vw] md:w-[75vw] flex flex-col">
-          <Information />
+      <div className="flex mt-2 justify-between">
+        <div className="w-[100vw] md:w-[77vw] flex flex-col">
+          <Information dataHeadCountByHire={overviewHeadcountByHireFilter} />
           <TopChart
             dataHeadCountByAgeRange={overviewHeadcountByAgeRangeFilter}
             dataHeadCountByEducation={overviewHeadcountByEducationFilter}
             dataHeadCountByContractType={overviewHeadcountByContractTypeFilter}
           />
         </div>
-        <div className="w-[50vw] md:w-[23vw] flex justify-center">
-          <RightInformation />
+        <div className="w-[50vw] md:w-[20vw] flex justify-center">
+          <RightInformation dataHeadcountDemographic={overviewHeadcountDemographicFilter} />
         </div>
       </div>
       <BotChart

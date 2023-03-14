@@ -43,6 +43,14 @@ type StateContract = {
   overviewHeadcountByContractType: TypeOVHeadCountByPosition[];
   overviewHeadcountByContractTypeFilter: { LABEL: string; DATA: number }[];
   overviewHeadcountContractTypeDataAll: { LABEL: string; DATA: number }[];
+  //headcount by hire
+  overviewHeadcountByHire: TypeOVHeadCountByPosition[];
+  overviewHeadcountByHireFilter: { LABEL: string; DATA: number }[];
+  overviewHeadcountHireDataAll: { LABEL: string; DATA: number }[];
+  //headcount by hire demographic
+  overviewHeadcountDemographic: TypeOVHeadCountByPosition[];
+  overviewHeadcountDemographicFilter: { LABEL: string; DATA: number }[];
+  overviewHeadcountDemographicDataAll: { LABEL: string; DATA: number }[];
 };
 
 const useChartData = create<StateContract>((set) => ({
@@ -50,21 +58,34 @@ const useChartData = create<StateContract>((set) => ({
   contractTypeHeadcount: [],
   genderTypeHeadcount: [],
   ageRangeTypeHeadcount: [],
+  // headcount by position
   overviewHeadcountByPosition: [],
   overviewHeadcountByPositionFilter: [],
   overviewHeadcountPositionDataAll: [],
+  // headcount by department
   overviewHeadcountByDepartment: [],
   overviewHeadcountByDepartmentFilter: [],
   overviewHeadcountDepartmentDataAll: [],
+  // headcount by age range
   overviewHeadcountByAgeRange: [],
   overviewHeadcountByAgeRangeFilter: [],
   overviewHeadcountAgeRangeDataAll: [],
+  // headcount by education
   overviewHeadcountByEducation: [],
   overviewHeadcountByEducationFilter: [],
   overviewHeadcountEducationDataAll: [],
+  // headcount by contract type
   overviewHeadcountByContractType: [],
   overviewHeadcountByContractTypeFilter: [],
   overviewHeadcountContractTypeDataAll: [],
+  // headcount by hire
+  overviewHeadcountByHire: [],
+  overviewHeadcountByHireFilter: [],
+  overviewHeadcountHireDataAll: [],
+  // headcount by hire demographic
+  overviewHeadcountDemographic: [],
+  overviewHeadcountDemographicFilter: [],
+  overviewHeadcountDemographicDataAll: [],
   getInitialData: async () => {
     try {
       const res1 = await axios.get(
@@ -81,6 +102,12 @@ const useChartData = create<StateContract>((set) => ({
       );
       const res5 = await axios.get(
         `/api/charts/employees-overview/headcount-by-contract-type`
+      );
+      const res6 = await axios.get(
+        `/api/charts/employees-overview/headcount-by-hire`
+      );
+      const res7 = await axios.get(
+        `/api/charts/employees-overview/headcount-demographic`
       );
       set((state: StateContract) => ({
         ...state,
@@ -109,6 +136,16 @@ const useChartData = create<StateContract>((set) => ({
           : [],
         overviewHeadcountContractTypeDataAll: !isEmpty(res5.data)
           ? res5.data?.dataAll
+          : [],
+        overviewHeadcountByHire: !isEmpty(res6.data) ? res6.data?.data : [],
+        overviewHeadcountHireDataAll: !isEmpty(res6.data)
+          ? res6.data?.dataAll
+          : [],
+        overviewHeadcountDemographic: !isEmpty(res7.data)
+          ? res7.data?.data
+          : [],
+        overviewHeadcountDemographicDataAll: !isEmpty(res7.data)
+          ? res7.data?.dataAll
           : [],
       }));
     } catch (err) {
@@ -144,6 +181,16 @@ const useChartData = create<StateContract>((set) => ({
               (item: TypeOVHeadCountByPosition) => item.YEAR === year
             )?.DATA ?? []
           : state.overviewHeadcountContractTypeDataAll,
+        overviewHeadcountByHireFilter: !isEmpty(year)
+          ? state.overviewHeadcountByHire.find(
+              (item: TypeOVHeadCountByPosition) => item.YEAR === year
+            )?.DATA ?? []
+          : state.overviewHeadcountHireDataAll,
+        overviewHeadcountDemographicFilter: !isEmpty(year)
+          ? state.overviewHeadcountDemographic.find(
+              (item: TypeOVHeadCountByPosition) => item.YEAR === year
+            )?.DATA ?? []
+          : state.overviewHeadcountDemographicDataAll,
       };
     });
   },

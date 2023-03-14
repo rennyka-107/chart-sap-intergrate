@@ -1,26 +1,23 @@
 import React from "react";
 
-type Props = {};
+type Props = {
+  dataHeadCountByHire: { LABEL: string; DATA: number | string }[];
+};
 
-const Information = (props: Props) => {
+const Information = ({ dataHeadCountByHire }: Props) => {
   return (
     <div className="flex gap-[1rem] w-full justify-center">
-      <div className="px-[2rem] flex flex-col items-center border-[1px] border-blue-500 rounded-md p-3 shadow-lg shadow-blue-200">
-        <p className="text-[1.5rem]">Headcount</p>
-        <p>193</p>
-      </div>
-      <div className="px-[2rem] flex flex-col items-center border-[1px] border-blue-500 rounded-md p-3 shadow-lg shadow-blue-200">
-        <p className="text-[1.5rem]">Hires</p>
-        <p>193</p>
-      </div>
-      <div className="px-[2rem] flex flex-col items-center border-[1px] border-blue-500 rounded-md p-3 shadow-lg shadow-blue-200">
-        <p className="text-[1.5rem]">Terminations</p>
-        <p>193</p>
-      </div>
-      <div className="px-[2rem] flex flex-col items-center border-[1px] border-blue-500 rounded-md p-3 shadow-lg shadow-blue-200">
-        <p className="text-[1.5rem]">Turnover Rate</p>
-        <p>193</p>
-      </div>
+      {(dataHeadCountByHire ?? []).map(
+        (item: { LABEL: string; DATA: number | string }) => (
+          <div
+            key={item.LABEL + item.DATA}
+            className="px-[2rem] flex flex-col items-center border-[1px] border-blue-500 rounded-md p-3 shadow-lg shadow-blue-200"
+          >
+            <p className="text-[1.5rem]">{item.LABEL}</p>
+            <p>{item.DATA}%</p>
+          </div>
+        )
+      )}
     </div>
   );
 };

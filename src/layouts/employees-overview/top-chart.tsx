@@ -124,8 +124,19 @@ const TopChart = ({
   useEffect(() => {
     getInitialData && getInitialData("2017", turnOn, turnOff, turnOff);
   }, [getInitialData]);
+
+  function getTotal(arr: { LABEL: string; DATA: number | string }[], {LABEL,DATA  }: {LABEL: string, DATA: number | string}) {
+    let result = 0;
+    for (let i = 0; i < arr.length; i++) {
+      result += Number(arr[i]["DATA"]);
+    }
+    if(result !== 0) {
+        return Math.round(10000*Number(DATA)/result)/100 + "%";
+    } 
+    return "0%";
+  }
   return (
-    <div className="flex flex-wrap flex-col md:flex-row justify-around">
+    <div className="flex flex-wrap flex-col md:flex-row justify-between">
       <ChartPartHeadcountByEducation
         data={dataHeadCountByEducation.sort((a, b) => b.DATA - a.DATA)}
         title="Headcount By Education"
@@ -138,12 +149,15 @@ const TopChart = ({
         title="Headcount by Contract Type"
         labels={
           !isEmpty(dataHeadCountByContractType)
-            ? dataHeadCountByContractType.map((item) => item.LABEL)
+            ? dataHeadCountByContractType.map(
+                (item) =>
+                  `${getTotal(dataHeadCountByContractType, item) + " " + item.LABEL}`
+              )
             : []
         }
         datasets={[
           {
-            label: " ",
+            label: " Headcount",
             backgroundColor: (dataHeadCountByContractType ?? []).map(
               (item) => "#" + Math.floor(Math.random() * 16777215).toString(16)
             ),
