@@ -10,9 +10,7 @@ type Props = {};
 
 const Summary = (props: Props) => {
   const [currentYear, setCurrentYear] = useState<string>("");
-  const {turnOff, turnOn} = useLoading();
   const {
-    getInitialData,
     overviewHeadcountByPosition,
     filterDataByYear,
     overviewHeadcountByDepartment,
@@ -25,10 +23,6 @@ const Summary = (props: Props) => {
     summarySickVocationLeave,
     summaryTotalSalary,
   } = useChartData();
-
-  useEffect(() => {
-    getInitialData && getInitialData(turnOn, turnOff);
-  }, [getInitialData]);
 
   useEffect(() => {
     if (

@@ -21,6 +21,8 @@ import "react-toastify/dist/ReactToastify.css";
 import useLoading from "@/src/hooks/useLoading";
 import AnimationLoading from "@/src/components/loading/AnimationLoading";
 import { useRouter } from "next/router";
+import useChartData from "@/src/hooks/useChartData";
+import { useEffect } from "react";
 
 ChartJS.register(
   RadialLinearScale,
@@ -38,6 +40,11 @@ ChartJS.register(
 export default function App({ Component, pageProps }: AppProps) {
   const status = useLoading((state) => state.status);
   const router = useRouter();
+  const { getInitialData } = useChartData();
+  const { turnOn, turnOff } = useLoading();
+  useEffect(() => {
+    getInitialData && getInitialData(turnOn, turnOff);
+  }, [getInitialData]);
   return (
     <SWRConfig
       value={{
