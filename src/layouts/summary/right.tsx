@@ -76,6 +76,7 @@ const ChartPartSickLeave = ({ title, data }: any) => {
 };
 
 const ChartPartAverageScore = ({ title, data }: any) => {
+  console.log(data, "data score");
   return (
     <div className="md:w-[49%] w-full flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
       <p className="font-semibold">{title}</p>
@@ -83,7 +84,9 @@ const ChartPartAverageScore = ({ title, data }: any) => {
         <Bar
           data={{
             labels: !isEmpty(data)
-              ? data.map((item: TypeDetailAverageScore) => item.DEPARTMENT)
+              ? data.map(
+                  (item: { LABEL: string; DATA: string | number }) => item.LABEL
+                )
               : [],
             datasets: [
               {
@@ -92,7 +95,9 @@ const ChartPartAverageScore = ({ title, data }: any) => {
                   ? data.map(() => "#3e95cd")
                   : [],
                 data: !isEmpty(data)
-                  ? data.map((item: TypeDetailAverageScore) => item.SCORE)
+                  ? data.map((item: { LABEL: string; DATA: string | number }) =>
+                      Number(item.DATA)
+                    )
                   : [],
               },
             ],
@@ -104,15 +109,6 @@ const ChartPartAverageScore = ({ title, data }: any) => {
             maintainAspectRatio: false,
             responsive: true,
             indexAxis: "y",
-            scales: {
-              y: {
-                // stackWeight: 0.5,
-                ticks: {
-                  // labelOffset: 100
-                  autoSkip: false,
-                },
-              },
-            },
           }}
         />
       </div>
@@ -159,34 +155,26 @@ const ChartPartHeadcount = ({ title, data }: any) => {
 };
 
 const RightPart = ({ year }: Props) => {
-  const { overviewHeadcountByPositionFilter } = useChartData();
   const {
-    getInitialData,
-    sickVocationLeave,
-    averageEmployeeScoreByDepartment,
-    headcountByPosition,
-    // totalSalaryExpensesByDepartment,
-  } = useSummaryChartBar();
-  const { turnOn, turnOff } = useLoading();
-  useEffect(() => {
-    getInitialData && getInitialData(year, turnOn, turnOff, turnOff);
-  }, [getInitialData, year]);
+    overviewHeadcountByPositionFilter,
+    summaryAverageScoreFilter,
+    summarySickVocationLeaveFilter,
+  } = useChartData();
 
   return (
     <div className="flex flex-wrap flex-col md:flex-row justify-between">
       <ChartPartSickLeave
-        data={sickVocationLeave}
+        data={summarySickVocationLeaveFilter}
         title="Sick Leave & Vocation Leave By Year"
       />
       <ChartPartAverageScore
-        data={averageEmployeeScoreByDepartment}
+        data={summaryAverageScoreFilter}
         title="Average Employee Score By Department"
       />
       <ChartPartHeadcount
         data={overviewHeadcountByPositionFilter}
         title="Headcount By Position"
       />
-      {/* <ChartPartSickLeave title="Total Salary Expenses By Department" /> */}
     </div>
   );
 };

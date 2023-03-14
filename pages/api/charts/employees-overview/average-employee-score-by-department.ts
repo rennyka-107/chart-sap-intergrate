@@ -7,24 +7,36 @@ type Data = any;
 
 const ArrayMapDepartments = [
   {
-    label: "HEADCOUNT",
-    description: "Headcount",
+    label: "HUMANRES",
+    description: "Human Resources",
   },
   {
-    label: "HIRES",
-    description: "Hires",
+    label: "PRODUCTION",
+    description: "Production",
   },
   {
-    label: "TERMINATION",
-    description: "Termination",
+    label: "SALES",
+    description: "Sales",
   },
   {
-    label: "TURNOVERRATE",
-    description: "Turnover Rate",
+    label: "ADOFFICE",
+    description: "Admin Offices",
+  },
+  {
+    label: "EXECOFFICE",
+    description: "Executive Offices",
+  },
+  {
+    label: "ITIS",
+    description: "IT/IS",
+  },
+  {
+    label: "SOFTENG",
+    description: "Software Engineering",
   },
 ];
 
-// http://win-saptest.sphinxjsc.com:8000/sap/opu/odata/sap/ZGS_EHEADCOUNT_SRV/data_outputSet?$format=json
+// http://win-saptest.sphinxjsc.com:8000/sap/opu/odata/sap/ZGW_SAESB_DEPT_SRV/SCORESet?$format=json
 
 export default async function handler(
   req: NextApiRequest,
@@ -32,7 +44,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const result = await axios.get(
-      `http://45.117.82.171:8000/sap/opu/odata/sap/ZGS_EHEADCOUNT_SRV/data_outputSet?$format=json`,
+      `http://45.117.82.171:8000/sap/opu/odata/sap/ZGW_SAESB_DEPT_SRV/SCORESet?$format=json`,
       {
         headers: {
           Authorization: "Basic dnVvbmc6dHVlbWluaDQ=",
@@ -61,22 +73,20 @@ export default async function handler(
 
     const allFormatData = ArrayMapDepartments.map((item: any) => {
       let value = 0;
-      if (item.label !== "HEADCOUNT") {
-        formatData.forEach((dt: any) => {
-          dt.DATA.forEach((it: any) => {
-            if (it.LABEL === item.description) value += it.DATA;
-          });
+      let avgNum = 0;
+      formatData.forEach((dt: any) => {
+        dt.DATA.forEach((it: any) => {
+          if (it.LABEL === item.description) {
+            value += Number(it.DATA);
+            if (Number(it.DATA) > 0) {
+              avgNum += 1;
+            }
+          }
         });
-      } else {
-        value =
-          formatData
-            .find((itm: any) => itm.YEAR === "2020")
-            ?.DATA.find((itms: any) => itms.LABEL === "Headcount")?.DATA ?? 0;
-      }
-
+      });
       return {
         LABEL: item.description,
-        DATA: value,
+        DATA: avgNum > 0 ? value / avgNum : 0,
       };
     });
 

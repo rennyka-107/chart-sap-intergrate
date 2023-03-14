@@ -1,5 +1,12 @@
+import useContract from "@/src/hooks/useContract";
+import useLoading from "@/src/hooks/useLoading";
+import useSummaryChartBar, {
+  TypeDetailAverageScore,
+  TypeDetailHeadcount,
+} from "@/src/hooks/useSummaryChartBar";
+import axios from "axios";
 import isEmpty from "lodash.isempty";
-import React from "react";
+import React, { useEffect } from "react";
 import { Bar, Doughnut } from "react-chartjs-2";
 
 type Props = {

@@ -16,7 +16,11 @@ const HeadPart = ({ currentYear, setCurrentYear }: Props) => {
       <div className="border-[1px] border-blue-300 rounded-lg p-5 flex gap-[5px] md:flex-nowrap flex-wrap">
         {ArrayYear.map((item) => (
           <button
-            onClick={() => setCurrentYear(item)}
+            onClick={() => {
+              if (currentYear === item) {
+                setCurrentYear("");
+              } else setCurrentYear(item);
+            }}
             key={item}
             className={`hover:bg-blue-400 text-white ${
               currentYear === item ? "bg-blue-500" : "bg-blue-300"

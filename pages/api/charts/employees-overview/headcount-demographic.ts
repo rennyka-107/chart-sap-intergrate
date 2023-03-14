@@ -59,7 +59,7 @@ export default async function handler(
       let value = 0;
       formatData.forEach((dt: any) => {
         dt.DATA.forEach((it: any) => {
-          if (it.LABEL === item.description) value += it.DATA;
+          if (it.LABEL === item.description) value += Number(it.DATA);
         });
       });
       return {

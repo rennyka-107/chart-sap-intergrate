@@ -27,7 +27,9 @@ const EmployeesOverview = (props: Props) => {
     overviewHeadcountByHire,
     overviewHeadcountByHireFilter,
     overviewHeadcountDemographic,
-    overviewHeadcountDemographicFilter
+    overviewHeadcountDemographicFilter,
+    summaryAverageScore,
+    summaryAverageScoreFilter
   } = useChartData();
 
   useEffect(() => {
@@ -42,7 +44,8 @@ const EmployeesOverview = (props: Props) => {
       (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByEducation)) ||
       (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByContractType)) ||
       (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByHire)) ||
-      (!isEmpty(currentYear) && !isEmpty(overviewHeadcountDemographic)) 
+      (!isEmpty(currentYear) && !isEmpty(overviewHeadcountDemographic)) ||
+      (!isEmpty(currentYear) && !isEmpty(summaryAverageScore)) 
     )
       filterDataByYear(currentYear);
   }, [
@@ -54,6 +57,7 @@ const EmployeesOverview = (props: Props) => {
     overviewHeadcountByContractType,
     overviewHeadcountByHire,
     overviewHeadcountDemographic,
+    summaryAverageScore
   ]);
 
   return (

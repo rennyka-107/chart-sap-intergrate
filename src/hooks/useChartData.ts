@@ -51,6 +51,26 @@ type StateContract = {
   overviewHeadcountDemographic: TypeOVHeadCountByPosition[];
   overviewHeadcountDemographicFilter: { LABEL: string; DATA: number }[];
   overviewHeadcountDemographicDataAll: { LABEL: string; DATA: number }[];
+  //average employee score by department
+  summaryAverageScore: TypeOVHeadCountByPosition[];
+  summaryAverageScoreFilter: { LABEL: string; DATA: number }[];
+  summaryAverageScoreDataAll: { LABEL: string; DATA: number }[];
+  //sick and vocation leave
+  summarySickVocationLeave: {
+    YEAR: string;
+    SICK: string | number;
+    VOCATION: string | number;
+  }[];
+  summarySickVocationLeaveFilter: {
+    YEAR: string;
+    SICK: string | number;
+    VOCATION: string | number;
+  }[];
+  summarySickVocationLeaveDataAll: {
+    YEAR: string;
+    SICK: string | number;
+    VOCATION: string | number;
+  }[];
 };
 
 const useChartData = create<StateContract>((set) => ({
@@ -86,6 +106,14 @@ const useChartData = create<StateContract>((set) => ({
   overviewHeadcountDemographic: [],
   overviewHeadcountDemographicFilter: [],
   overviewHeadcountDemographicDataAll: [],
+  // average employee score by department
+  summaryAverageScore: [],
+  summaryAverageScoreFilter: [],
+  summaryAverageScoreDataAll: [],
+  // sick vocation leave
+  summarySickVocationLeave: [],
+  summarySickVocationLeaveFilter: [],
+  summarySickVocationLeaveDataAll: [],
   getInitialData: async () => {
     try {
       const res1 = await axios.get(
@@ -108,6 +136,12 @@ const useChartData = create<StateContract>((set) => ({
       );
       const res7 = await axios.get(
         `/api/charts/employees-overview/headcount-demographic`
+      );
+      const res8 = await axios.get(
+        `/api/charts/employees-overview/average-employee-score-by-department`
+      );
+      const res9 = await axios.get(
+        `/api/charts/employees-overview/sick-vocation-leave-by-year`
       );
       set((state: StateContract) => ({
         ...state,
@@ -146,6 +180,14 @@ const useChartData = create<StateContract>((set) => ({
           : [],
         overviewHeadcountDemographicDataAll: !isEmpty(res7.data)
           ? res7.data?.dataAll
+          : [],
+        summaryAverageScore: !isEmpty(res8.data) ? res8.data?.data : [],
+        summaryAverageScoreDataAll: !isEmpty(res8.data)
+          ? res8.data?.dataAll
+          : [],
+        summarySickVocationLeave: !isEmpty(res9.data) ? res9.data?.data : [],
+        summarySickVocationLeaveDataAll: !isEmpty(res9.data)
+          ? res9.data?.data
           : [],
       }));
     } catch (err) {
@@ -191,6 +233,37 @@ const useChartData = create<StateContract>((set) => ({
               (item: TypeOVHeadCountByPosition) => item.YEAR === year
             )?.DATA ?? []
           : state.overviewHeadcountDemographicDataAll,
+        summaryAverageScoreFilter: !isEmpty(year)
+          ? state.summaryAverageScore.find(
+              (item: TypeOVHeadCountByPosition) => item.YEAR === year
+            )?.DATA ?? []
+          : state.summaryAverageScoreDataAll,
+        summarySickVocationLeaveFilter: !isEmpty(year)
+          ? state.summarySickVocationLeave.filter(
+              (item: any) => item.YEAR === year
+            )
+          : state.summarySickVocationLeaveDataAll,
+        // summarySickVocationLeaveFilter: !isEmpty(year)
+        //   ? state.summarySickVocationLeave.find(
+        //       (item: TypeOVHeadCountByPosition) => item.YEAR === year
+        //     )
+        //     ? [
+        //         {
+        //           YEAR: year,
+        //           SICK: state.summarySickVocationLeave
+        //             .find(
+        //               (item: TypeOVHeadCountByPosition) => item.YEAR === year
+        //             )
+        //             ?.DATA?.find((it: any) => it.LABEL === "Sick leave")?.DATA,
+        //           VOCATION: state.summarySickVocationLeave
+        //           .find(
+        //             (item: TypeOVHeadCountByPosition) => item.YEAR === year
+        //           )
+        //           ?.DATA?.find((it: any) => it.LABEL === "Vocation leave")?.DATA,
+        //         },
+        //       ]
+        //     : []
+        //   : state.summarySickVocationLeaveDataAll,
       };
     });
   },

@@ -7,24 +7,20 @@ type Data = any;
 
 const ArrayMapDepartments = [
   {
-    label: "HEADCOUNT",
-    description: "Headcount",
+    label: "YOUNG",
+    description: "<30",
   },
   {
-    label: "HIRES",
-    description: "Hires",
+    label: "MIDDLEAGE",
+    description: "30-49",
   },
   {
-    label: "TERMINATION",
-    description: "Termination",
-  },
-  {
-    label: "TURNOVERRATE",
-    description: "Turnover Rate",
+    label: "OLDAGE",
+    description: "50+",
   },
 ];
 
-// http://win-saptest.sphinxjsc.com:8000/sap/opu/odata/sap/ZGS_EHEADCOUNT_SRV/data_outputSet?$format=json
+// http://win-saptest.sphinxjsc.com:8000/sap/opu/odata/sap/ZODATA_SALARY_DEPARTMENT_SRV/SALARYSet?$format=json
 
 export default async function handler(
   req: NextApiRequest,
@@ -32,7 +28,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const result = await axios.get(
-      `http://45.117.82.171:8000/sap/opu/odata/sap/ZGS_EHEADCOUNT_SRV/data_outputSet?$format=json`,
+      `http://45.117.82.171:8000/sap/opu/odata/sap/ZODATA_SALARY_DEPARTMENT_SRV/SALARYSet?$format=json`,
       {
         headers: {
           Authorization: "Basic dnVvbmc6dHVlbWluaDQ=",
@@ -61,19 +57,11 @@ export default async function handler(
 
     const allFormatData = ArrayMapDepartments.map((item: any) => {
       let value = 0;
-      if (item.label !== "HEADCOUNT") {
-        formatData.forEach((dt: any) => {
-          dt.DATA.forEach((it: any) => {
-            if (it.LABEL === item.description) value += it.DATA;
-          });
+      formatData.forEach((dt: any) => {
+        dt.DATA.forEach((it: any) => {
+          if (it.LABEL === item.description) value += it.DATA;
         });
-      } else {
-        value =
-          formatData
-            .find((itm: any) => itm.YEAR === "2020")
-            ?.DATA.find((itms: any) => itms.LABEL === "Headcount")?.DATA ?? 0;
-      }
-
+      });
       return {
         LABEL: item.description,
         DATA: value,

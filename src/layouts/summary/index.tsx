@@ -1,14 +1,14 @@
 import useChartData from "@/src/hooks/useChartData";
 import isEmpty from "lodash.isempty";
 import React, { useEffect, useState } from "react";
-import HeadPart, { ArrayYear } from "./head";
+import HeadPart from "./head";
 import LeftPart from "./left";
 import RightPart from "./right";
 
 type Props = {};
 
 const Summary = (props: Props) => {
-  const [currentYear, setCurrentYear] = useState<string>(ArrayYear[0]);
+  const [currentYear, setCurrentYear] = useState<string>("");
   const {
     getInitialData,
     overviewHeadcountByPosition,
@@ -19,6 +19,8 @@ const Summary = (props: Props) => {
     overviewHeadcountByContractType,
     overviewHeadcountByHire,
     overviewHeadcountDemographic,
+    summaryAverageScore,
+    summarySickVocationLeave,
   } = useChartData();
 
   useEffect(() => {
@@ -27,13 +29,15 @@ const Summary = (props: Props) => {
 
   useEffect(() => {
     if (
-      (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByPosition)) ||
-      (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByDepartment)) ||
-      (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByAgeRange)) ||
-      (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByEducation)) ||
-      (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByContractType)) ||
-      (!isEmpty(currentYear) && !isEmpty(overviewHeadcountByHire)) ||
-      (!isEmpty(currentYear) && !isEmpty(overviewHeadcountDemographic))
+      !isEmpty(overviewHeadcountByPosition) ||
+      !isEmpty(overviewHeadcountByDepartment) ||
+      !isEmpty(overviewHeadcountByAgeRange) ||
+      !isEmpty(overviewHeadcountByEducation) ||
+      !isEmpty(overviewHeadcountByContractType) ||
+      !isEmpty(overviewHeadcountByHire) ||
+      !isEmpty(overviewHeadcountDemographic) ||
+      !isEmpty(summaryAverageScore) ||
+      !isEmpty(summarySickVocationLeave)
     )
       filterDataByYear(currentYear);
   }, [
@@ -45,6 +49,8 @@ const Summary = (props: Props) => {
     overviewHeadcountByContractType,
     overviewHeadcountByHire,
     overviewHeadcountDemographic,
+    summaryAverageScore,
+    summarySickVocationLeave,
   ]);
   return (
     <div>
