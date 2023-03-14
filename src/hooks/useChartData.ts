@@ -55,6 +55,28 @@ type StateContract = {
   summaryAverageScore: TypeOVHeadCountByPosition[];
   summaryAverageScoreFilter: { LABEL: string; DATA: number }[];
   summaryAverageScoreDataAll: { LABEL: string; DATA: number }[];
+  //average employee score by department
+  summaryTotalSalary: TypeOVHeadCountByPosition[];
+  summaryTotalSalaryFilter: { LABEL: string; DATA: number }[];
+  summaryTotalSalaryDataAll: { LABEL: string; DATA: number }[];
+  //training total cost
+  trainingTotalCostOverview: TypeOVHeadCountByPosition[];
+  trainingTotalCostOverviewFilter: { LABEL: string; DATA: number }[];
+  trainingTotalCostOverviewDataAll: { LABEL: string; DATA: number }[];
+  //training total cost by program
+  trainingTotalCostByProgram: TypeOVHeadCountByPosition[];
+  trainingTotalCostByProgramFilter: { LABEL: string; DATA: number }[];
+  trainingTotalCostByProgramDataAll: { LABEL: string; DATA: number }[];
+  //training type
+  trainingType: TypeOVHeadCountByPosition[];
+  trainingTypeFilter: { LABEL: string; DATA: number }[];
+  trainingTypeDataAll: { LABEL: string; DATA: number }[];
+  //training total cost by department
+  trainingDepartment: TypeOVHeadCountByPosition[];
+  trainingDepartmentFilter: { LABEL: string; DATA: number }[];
+  trainingDepartmentDataAll: { LABEL: string; DATA: number }[];
+  // total
+  trainingCalTotal: { YEAR: string; DATA: number }[];
   //sick and vocation leave
   summarySickVocationLeave: {
     YEAR: string;
@@ -114,6 +136,27 @@ const useChartData = create<StateContract>((set) => ({
   summarySickVocationLeave: [],
   summarySickVocationLeaveFilter: [],
   summarySickVocationLeaveDataAll: [],
+  // total salary
+  summaryTotalSalary: [],
+  summaryTotalSalaryFilter: [],
+  summaryTotalSalaryDataAll: [],
+  // training total cost
+  trainingTotalCostOverview: [],
+  trainingTotalCostOverviewFilter: [],
+  trainingTotalCostOverviewDataAll: [],
+  // training total cost by program
+  trainingTotalCostByProgram: [],
+  trainingTotalCostByProgramFilter: [],
+  trainingTotalCostByProgramDataAll: [],
+  // training type
+  trainingType: [],
+  trainingTypeFilter: [],
+  trainingTypeDataAll: [],
+  // training department
+  trainingDepartment: [],
+  trainingDepartmentFilter: [],
+  trainingDepartmentDataAll: [],
+  trainingCalTotal: [],
   getInitialData: async () => {
     try {
       const res1 = await axios.get(
@@ -142,6 +185,21 @@ const useChartData = create<StateContract>((set) => ({
       );
       const res9 = await axios.get(
         `/api/charts/employees-overview/sick-vocation-leave-by-year`
+      );
+      const res10 = await axios.get(
+        `/api/charts/employees-overview/total-salary-expenses-by-department`
+      );
+      const res11 = await axios.get(
+        `/api/charts/employees-overview/training-total-overview`
+      );
+      const res12 = await axios.get(
+        `/api/charts/employees-overview/training-cost-by-program`
+      );
+      const res13 = await axios.get(
+        `/api/charts/employees-overview/training-type`
+      );
+      const res14 = await axios.get(
+        `/api/charts/employees-overview/training-cost-by-department`
       );
       set((state: StateContract) => ({
         ...state,
@@ -189,6 +247,26 @@ const useChartData = create<StateContract>((set) => ({
         summarySickVocationLeaveDataAll: !isEmpty(res9.data)
           ? res9.data?.data
           : [],
+        summaryTotalSalary: !isEmpty(res10.data) ? res10.data?.data : [],
+        summaryTotalSalaryDataAll: !isEmpty(res10.data)
+          ? res10.data?.dataAll
+          : [],
+        trainingTotalCostOverview: !isEmpty(res11.data) ? res11.data?.data : [],
+        trainingTotalCostOverviewDataAll: !isEmpty(res11.data)
+          ? res11.data?.dataAll
+          : [],
+        trainingTotalCostByProgram: !isEmpty(res12.data)
+          ? res12.data?.data
+          : [],
+        trainingTotalCostByProgramDataAll: !isEmpty(res12.data)
+          ? res12.data?.dataAll
+          : [],
+        trainingType: !isEmpty(res13.data) ? res13.data?.data : [],
+        trainingTypeDataAll: !isEmpty(res13.data) ? res13.data?.dataAll : [],
+        trainingDepartment: !isEmpty(res14.data) ? res14.data?.data : [],
+        trainingDepartmentDataAll: !isEmpty(res14.data)
+          ? res14.data?.dataAll
+          : [],
       }));
     } catch (err) {
       console.log(err);
@@ -196,6 +274,17 @@ const useChartData = create<StateContract>((set) => ({
   },
   filterDataByYear: (year?: string) => {
     set((state: StateContract) => {
+      let value = 0;
+      if (!isEmpty(year) && !isEmpty(state.trainingDepartment)) {
+        const findItem = state.trainingDepartment.find(
+          (item: TypeOVHeadCountByPosition) => item.YEAR === year
+        );
+        if (!isEmpty(findItem)) {
+          findItem.DATA.forEach((it: { LABEL: string; DATA: number }) => {
+            value += Number(it.DATA);
+          });
+        }
+      }
       return {
         ...state,
         overviewHeadcountByPositionFilter: !isEmpty(year)
@@ -243,27 +332,49 @@ const useChartData = create<StateContract>((set) => ({
               (item: any) => item.YEAR === year
             )
           : state.summarySickVocationLeaveDataAll,
-        // summarySickVocationLeaveFilter: !isEmpty(year)
-        //   ? state.summarySickVocationLeave.find(
-        //       (item: TypeOVHeadCountByPosition) => item.YEAR === year
-        //     )
-        //     ? [
-        //         {
-        //           YEAR: year,
-        //           SICK: state.summarySickVocationLeave
-        //             .find(
-        //               (item: TypeOVHeadCountByPosition) => item.YEAR === year
-        //             )
-        //             ?.DATA?.find((it: any) => it.LABEL === "Sick leave")?.DATA,
-        //           VOCATION: state.summarySickVocationLeave
-        //           .find(
-        //             (item: TypeOVHeadCountByPosition) => item.YEAR === year
-        //           )
-        //           ?.DATA?.find((it: any) => it.LABEL === "Vocation leave")?.DATA,
-        //         },
-        //       ]
-        //     : []
-        //   : state.summarySickVocationLeaveDataAll,
+        summaryTotalSalaryFilter: !isEmpty(year)
+          ? state.summaryTotalSalary.find(
+              (item: TypeOVHeadCountByPosition) => item.YEAR === year
+            )?.DATA ?? []
+          : state.summaryTotalSalaryDataAll,
+        trainingTotalCostOverviewFilter: !isEmpty(year)
+          ? state.trainingTotalCostOverview.find(
+              (item: TypeOVHeadCountByPosition) => item.YEAR === year
+            )?.DATA ?? []
+          : state.trainingTotalCostOverviewDataAll,
+        trainingTotalCostByProgramFilter: !isEmpty(year)
+          ? state.trainingTotalCostByProgram.find(
+              (item: TypeOVHeadCountByPosition) => item.YEAR === year
+            )?.DATA ?? []
+          : state.trainingTotalCostByProgramDataAll,
+        trainingTypeFilter: !isEmpty(year)
+          ? state.trainingType.find(
+              (item: TypeOVHeadCountByPosition) => item.YEAR === year
+            )?.DATA ?? []
+          : state.trainingTypeDataAll,
+        trainingDepartmentFilter: !isEmpty(year)
+          ? state.trainingDepartment.find(
+              (item: TypeOVHeadCountByPosition) => item.YEAR === year
+            )?.DATA ?? []
+          : state.trainingDepartmentDataAll,
+        trainingCalTotal: !isEmpty(year)
+          ? [{ YEAR: year as string, DATA: value }]
+          : state.trainingDepartment.map(
+              (item: {
+                YEAR: string;
+                DATA: { LABEL: string; DATA: number }[];
+              }) => {
+                let value = 0;
+                item.DATA.forEach(
+                  (its: { LABEL: string; DATA: number }) =>
+                    (value += Number(its.DATA))
+                );
+                return {
+                  YEAR: item.YEAR,
+                  DATA: value,
+                };
+              }
+            ),
       };
     });
   },

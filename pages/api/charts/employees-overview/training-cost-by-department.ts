@@ -7,36 +7,36 @@ type Data = any;
 
 const ArrayMapDepartments = [
   {
-    label: "HUMANRES",
-    description: "Human Resources",
-  },
-  {
-    label: "PRODUCTION",
-    description: "Production",
-  },
-  {
     label: "SALES",
     description: "Sales",
-  },
-  {
-    label: "ADOFFICE",
-    description: "Admin Offices",
-  },
-  {
-    label: "EXECOFFICE",
-    description: "Executive Offices",
   },
   {
     label: "ITIS",
     description: "IT/IS",
   },
   {
-    label: "SOFTENG",
+    label: "PRODUCTION",
+    description: "Production",
+  },
+  {
+    label: "SOFTWAREENGINEERING",
     description: "Software Engineering",
+  },
+  {
+    label: "ADMINOFFICES",
+    description: "Admin Offices",
+  },
+  {
+    label: "EXECUTIVEOFFICE",
+    description: "Executive Office",
+  },
+  {
+    label: "HUMANRESOURCES",
+    description: "Human Resources",
   },
 ];
 
-// http://win-saptest.sphinxjsc.com:8000/sap/opu/odata/sap/ZODATA_SALARY_DEPARTMENT_SRV/SALARYSet?$format=json
+// http://win-saptest.sphinxjsc.com:8000/sap/opu/odata/sap/ZGS_TTC_BY_D_SRV/TOTALCOSTSet?$format=json
 
 export default async function handler(
   req: NextApiRequest,
@@ -44,7 +44,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const result = await axios.get(
-      `http://45.117.82.171:8000/sap/opu/odata/sap/ZODATA_SALARY_DEPARTMENT_SRV/SALARYSet?$format=json`,
+      `http://45.117.82.171:8000/sap/opu/odata/sap/ZGS_TTC_BY_D_SRV/TOTALCOSTSet?$format=json`,
       {
         headers: {
           Authorization: "Basic dnVvbmc6dHVlbWluaDQ=",
@@ -58,9 +58,13 @@ export default async function handler(
         const findItem = ArrayMapDepartments.find(
           (item: any) => item.label === property.toLocaleUpperCase()
         );
-        if (property !== "Zyear" && property !== "__metadata") {
+        if (
+          property !== "Zyear" &&
+          property !== "__metadata" &&
+          property !== "Currency"
+        ) {
           arrData.push({
-            DATA: obj[property],
+            DATA: 10 * Number(obj[property]),
             LABEL: !isEmpty(findItem) ? findItem?.description : property,
           });
         }

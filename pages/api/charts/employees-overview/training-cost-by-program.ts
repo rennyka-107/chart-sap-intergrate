@@ -7,36 +7,52 @@ type Data = any;
 
 const ArrayMapDepartments = [
   {
-    label: "HUMANRES",
-    description: "Human Resources",
+    label: "POWERBI",
+    description: "Power BI",
   },
   {
-    label: "PRODUCTION",
-    description: "Production",
+    label: "EXCEL",
+    description: "Microsoft excel",
   },
   {
-    label: "SALES",
-    description: "Sales",
+    label: "MIOFFICE",
+    description: "Microsoft office",
   },
   {
-    label: "ADOFFICE",
-    description: "Admin Offices",
+    label: "CODECONDUCT",
+    description: "Code of Conduct",
   },
   {
-    label: "EXECOFFICE",
-    description: "Executive Offices",
+    label: "PROTRAIN1",
+    description: "Production training 1",
   },
   {
-    label: "ITIS",
-    description: "IT/IS",
+    label: "WORKHS",
+    description: "Work Health & Safety",
   },
   {
-    label: "SOFTENG",
-    description: "Software Engineering",
+    label: "ADVANCEPRESKILL",
+    description: "Advance presentation skill",
+  },
+  {
+    label: "CUSSERVICECOM",
+    description: "Customer Services & Communication",
+  },
+  {
+    label: "PROTRAIN3",
+    description: "Production Training 3",
+  },
+  {
+    label: "ADVANCEBUSSTRA",
+    description: "Advance Business Strategy",
+  },
+  {
+    label: "PROTRAIN2",
+    description: "Production Training 2",
   },
 ];
 
-// http://win-saptest.sphinxjsc.com:8000/sap/opu/odata/sap/ZODATA_SALARY_DEPARTMENT_SRV/SALARYSet?$format=json
+// http://win-saptest.sphinxjsc.com:8000/sap/opu/odata/sap/ZGW_T_TRAINCOST_SRV/TraincostSet?$format=json
 
 export default async function handler(
   req: NextApiRequest,
@@ -44,7 +60,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const result = await axios.get(
-      `http://45.117.82.171:8000/sap/opu/odata/sap/ZODATA_SALARY_DEPARTMENT_SRV/SALARYSet?$format=json`,
+      `http://45.117.82.171:8000/sap/opu/odata/sap/ZGW_T_TRAINCOST_SRV/TraincostSet?$format=json`,
       {
         headers: {
           Authorization: "Basic dnVvbmc6dHVlbWluaDQ=",
@@ -75,7 +91,7 @@ export default async function handler(
       let value = 0;
       formatData.forEach((dt: any) => {
         dt.DATA.forEach((it: any) => {
-          if (it.LABEL === item.description) value += Number(it.DATA);
+          if (it.LABEL === item.description) value += it.DATA;
         });
       });
       return {

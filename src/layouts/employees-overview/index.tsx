@@ -61,7 +61,7 @@ const EmployeesOverview = (props: Props) => {
   ]);
 
   return (
-    <div>
+    <div className="w-[100vw]">
       <HeadPart currentYear={currentYear} setCurrentYear={setCurrentYear} />
       <div className="flex flex-col gap-[1rem] lg:gap-0 lg:flex-row mt-2 justify-between">
         <div className="w-[100vw] lg:w-[77vw] flex flex-col">

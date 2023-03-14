@@ -13,21 +13,11 @@ const Training = (props: Props) => {
   const [currentYear, setCurrentYear] = useState<string>("");
   const {
     getInitialData,
-    overviewHeadcountByPositionFilter,
-    overviewHeadcountByPosition,
     filterDataByYear,
-    overviewHeadcountByDepartment,
-    overviewHeadcountByDepartmentFilter,
-    overviewHeadcountByAgeRange,
-    overviewHeadcountByAgeRangeFilter,
-    overviewHeadcountByEducation,
-    overviewHeadcountByEducationFilter,
-    overviewHeadcountByContractType,
-    overviewHeadcountByContractTypeFilter,
-    overviewHeadcountByHire,
-    overviewHeadcountByHireFilter,
-    overviewHeadcountDemographic,
-    overviewHeadcountDemographicFilter,
+    trainingTotalCostOverview,
+    trainingTotalCostByProgram,
+    trainingType,
+    trainingDepartment,
   } = useChartData();
 
   useEffect(() => {
@@ -36,59 +26,35 @@ const Training = (props: Props) => {
 
   useEffect(() => {
     if (
-      !isEmpty(overviewHeadcountByPosition) ||
-      !isEmpty(overviewHeadcountByDepartment) ||
-      !isEmpty(overviewHeadcountByAgeRange) ||
-      !isEmpty(overviewHeadcountByEducation) ||
-      !isEmpty(overviewHeadcountByContractType) ||
-      !isEmpty(overviewHeadcountByHire) ||
-      !isEmpty(overviewHeadcountDemographic)
+      !isEmpty(trainingTotalCostOverview) ||
+      !isEmpty(trainingTotalCostByProgram) ||
+      !isEmpty(trainingType) ||
+      !isEmpty(trainingDepartment)
     )
       filterDataByYear(currentYear);
   }, [
     currentYear,
-    overviewHeadcountByPosition,
-    overviewHeadcountByDepartment,
-    overviewHeadcountByAgeRange,
-    overviewHeadcountByEducation,
-    overviewHeadcountByContractType,
-    overviewHeadcountByHire,
-    overviewHeadcountDemographic,
+    trainingTotalCostOverview,
+    trainingTotalCostByProgram,
+    trainingType,
+    trainingDepartment,
   ]);
   return (
     <div>
       <HeadPart currentYear={currentYear} setCurrentYear={setCurrentYear} />
-      <Information dataHeadCountByHire={overviewHeadcountByHireFilter} />
-      <div className="flex flex-col justify-between md:flex-row">
-        <div className="w-[32%]">
-          <FirstColumn
-            dataHeadCountByDepartment={overviewHeadcountByDepartmentFilter}
-          />
+      <Information />
+      <div className="flex flex-col justify-around md:flex-row">
+        <div className="md:w-[32%] w-[100%]">
+          <FirstColumn />
         </div>
-        <div className="flex flex-col justify-between w-[65%]">
+        <div className="flex flex-col justify-between md:w-[65%] w-[100%]">
           <div>
-            <SecondColumn
-              dataHeadCountByAgeRange={overviewHeadcountByAgeRangeFilter}
-              dataHeadCountByContractType={
-                overviewHeadcountByContractTypeFilter
-              }
-            />
+            <SecondColumn />
           </div>
           <div>
-            <ThirdColumn
-              dataHeadCountByAgeRange={overviewHeadcountByAgeRangeFilter}
-              dataHeadCountByContractType={
-                overviewHeadcountByContractTypeFilter
-              }
-            />
+            <ThirdColumn />
           </div>
         </div>
-        {/* <div className="flex flex-col justify-between w-[32%]">
-          <ThirdColumn
-            dataHeadCountByAgeRange={overviewHeadcountByAgeRangeFilter}
-            dataHeadCountByContractType={overviewHeadcountByContractTypeFilter}
-          />
-        </div> */}
       </div>
     </div>
   );

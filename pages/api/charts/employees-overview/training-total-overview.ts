@@ -2,41 +2,38 @@
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 import isEmpty from "lodash.isempty";
+import { it } from "node:test";
 
 type Data = any;
 
 const ArrayMapDepartments = [
   {
-    label: "HUMANRES",
-    description: "Human Resources",
+    label: "PRONUM",
+    description: "Training Programs",
   },
   {
-    label: "PRODUCTION",
-    description: "Production",
+    label: "PATICIPANTS",
+    description: "Paticipants",
   },
   {
-    label: "SALES",
-    description: "Sales",
+    label: "TOTALCOST",
+    description: "Total Cost",
   },
   {
-    label: "ADOFFICE",
-    description: "Admin Offices",
+    label: "HOURSSPENT",
+    description: "Hours Spent In Training",
   },
   {
-    label: "EXECOFFICE",
-    description: "Executive Offices",
+    label: "HOURSVSTARGET",
+    description: "Hours of Training vs Target",
   },
   {
-    label: "ITIS",
-    description: "IT/IS",
-  },
-  {
-    label: "SOFTENG",
-    description: "Software Engineering",
+    label: "COSTVSTARGET",
+    description: "Actual Cost vs Training Budget",
   },
 ];
 
-// http://win-saptest.sphinxjsc.com:8000/sap/opu/odata/sap/ZODATA_SALARY_DEPARTMENT_SRV/SALARYSet?$format=json
+// http://win-saptest.sphinxjsc.com:8000/sap/opu/odata/sap/ZGS_ETRAIN_COST_SRV/data_outputSet?$format=json
 
 export default async function handler(
   req: NextApiRequest,
@@ -44,7 +41,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const result = await axios.get(
-      `http://45.117.82.171:8000/sap/opu/odata/sap/ZODATA_SALARY_DEPARTMENT_SRV/SALARYSet?$format=json`,
+      `http://45.117.82.171:8000/sap/opu/odata/sap/ZGS_ETRAIN_COST_SRV/data_outputSet?$format=json`,
       {
         headers: {
           Authorization: "Basic dnVvbmc6dHVlbWluaDQ=",
@@ -73,14 +70,33 @@ export default async function handler(
 
     const allFormatData = ArrayMapDepartments.map((item: any) => {
       let value = 0;
+      let avgNum = 0;
+      let max = 0;
       formatData.forEach((dt: any) => {
         dt.DATA.forEach((it: any) => {
-          if (it.LABEL === item.description) value += Number(it.DATA);
+          if (it.LABEL === item.description) {
+            value += Number(it.DATA.toString().replace("K", ""));
+            if (Number(it.DATA) > 0) {
+              avgNum += 1;
+            }
+            if (Number(it.DATA) > max) {
+              max = Number(it.DATA);
+            }
+          }
         });
       });
       return {
         LABEL: item.description,
-        DATA: value,
+        DATA:
+          item.label === "HOURSVSTARGET" || item.label === "COSTVSTARGET"
+            ? avgNum > 0
+              ? value / avgNum
+              : 0
+            : item.label === "PRONUM"
+            ? max
+            : item.label === "TOTALCOST"
+            ? value + "K"
+            : value,
       };
     });
 

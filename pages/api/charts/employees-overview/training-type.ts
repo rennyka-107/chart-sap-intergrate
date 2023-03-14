@@ -7,36 +7,16 @@ type Data = any;
 
 const ArrayMapDepartments = [
   {
-    label: "HUMANRES",
-    description: "Human Resources",
+    label: "SOFTSKILLS",
+    description: "Soft Skills",
   },
   {
-    label: "PRODUCTION",
-    description: "Production",
-  },
-  {
-    label: "SALES",
-    description: "Sales",
-  },
-  {
-    label: "ADOFFICE",
-    description: "Admin Offices",
-  },
-  {
-    label: "EXECOFFICE",
-    description: "Executive Offices",
-  },
-  {
-    label: "ITIS",
-    description: "IT/IS",
-  },
-  {
-    label: "SOFTENG",
-    description: "Software Engineering",
+    label: "TECHNICALSKILLS",
+    description: "Technical Skills",
   },
 ];
 
-// http://win-saptest.sphinxjsc.com:8000/sap/opu/odata/sap/ZODATA_SALARY_DEPARTMENT_SRV/SALARYSet?$format=json
+// http://win-saptest.sphinxjsc.com:8000/sap/opu/odata/sap/ZODATA_TRAINING_TYPE_SRV/TRAININGSet?$format=json
 
 export default async function handler(
   req: NextApiRequest,
@@ -44,7 +24,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const result = await axios.get(
-      `http://45.117.82.171:8000/sap/opu/odata/sap/ZODATA_SALARY_DEPARTMENT_SRV/SALARYSet?$format=json`,
+      `http://45.117.82.171:8000/sap/opu/odata/sap/ZODATA_TRAINING_TYPE_SRV/TRAININGSet?$format=json`,
       {
         headers: {
           Authorization: "Basic dnVvbmc6dHVlbWluaDQ=",
@@ -58,7 +38,7 @@ export default async function handler(
         const findItem = ArrayMapDepartments.find(
           (item: any) => item.label === property.toLocaleUpperCase()
         );
-        if (property !== "Zyear" && property !== "__metadata") {
+        if (property !== "Zyear" && property !== "__metadata" && property !== "TechPercent" && property !== "SoftPercent") {
           arrData.push({
             DATA: obj[property],
             LABEL: !isEmpty(findItem) ? findItem?.description : property,
@@ -75,7 +55,7 @@ export default async function handler(
       let value = 0;
       formatData.forEach((dt: any) => {
         dt.DATA.forEach((it: any) => {
-          if (it.LABEL === item.description) value += Number(it.DATA);
+          if (it.LABEL === item.description) value += it.DATA;
         });
       });
       return {

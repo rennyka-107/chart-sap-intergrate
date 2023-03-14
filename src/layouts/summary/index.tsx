@@ -21,6 +21,7 @@ const Summary = (props: Props) => {
     overviewHeadcountDemographic,
     summaryAverageScore,
     summarySickVocationLeave,
+    summaryTotalSalary,
   } = useChartData();
 
   useEffect(() => {
@@ -37,7 +38,8 @@ const Summary = (props: Props) => {
       !isEmpty(overviewHeadcountByHire) ||
       !isEmpty(overviewHeadcountDemographic) ||
       !isEmpty(summaryAverageScore) ||
-      !isEmpty(summarySickVocationLeave)
+      !isEmpty(summarySickVocationLeave) ||
+      !isEmpty(summaryTotalSalary)
     )
       filterDataByYear(currentYear);
   }, [
@@ -51,6 +53,7 @@ const Summary = (props: Props) => {
     overviewHeadcountDemographic,
     summaryAverageScore,
     summarySickVocationLeave,
+    summaryTotalSalary
   ]);
   return (
     <div>

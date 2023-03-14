@@ -76,7 +76,6 @@ const ChartPartSickLeave = ({ title, data }: any) => {
 };
 
 const ChartPartAverageScore = ({ title, data }: any) => {
-  console.log(data, "data score");
   return (
     <div className="md:w-[49%] w-full flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
       <p className="font-semibold">{title}</p>
@@ -154,12 +153,53 @@ const ChartPartHeadcount = ({ title, data }: any) => {
   );
 };
 
+const ChartPartTotalSalary = ({ title, data }: any) => {
+  return (
+    <div className="md:w-[49%] w-full flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
+      <p className="font-semibold">{title}</p>
+      <div className="w-full flex justify-center md:min-h-[200px] xl:min-h-[400px]">
+        <Bar
+          data={{
+            labels: !isEmpty(data)
+              ? data.map(
+                  (item: { LABEL: string; DATA: number | string }) => item.LABEL
+                )
+              : [],
+            datasets: [
+              {
+                label: "Headcount",
+                backgroundColor: !isEmpty(data)
+                  ? data.map(() => "#F06292")
+                  : [],
+                data: !isEmpty(data)
+                  ? data.map(
+                      (item: { LABEL: string; DATA: number | string }) =>
+                        item.DATA
+                    )
+                  : [],
+              },
+            ],
+          }}
+          options={{
+            maintainAspectRatio: false,
+            responsive: true,
+            indexAxis: "y",
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
 const RightPart = ({ year }: Props) => {
   const {
     overviewHeadcountByPositionFilter,
     summaryAverageScoreFilter,
     summarySickVocationLeaveFilter,
+    summaryTotalSalaryFilter,
   } = useChartData();
+
+  console.log(summaryTotalSalaryFilter, "as");
 
   return (
     <div className="flex flex-wrap flex-col md:flex-row justify-between">
@@ -168,12 +208,16 @@ const RightPart = ({ year }: Props) => {
         title="Sick Leave & Vocation Leave By Year"
       />
       <ChartPartAverageScore
-        data={summaryAverageScoreFilter}
+        data={summaryAverageScoreFilter.sort((a, b) => b.DATA - a.DATA)}
         title="Average Employee Score By Department"
       />
       <ChartPartHeadcount
         data={overviewHeadcountByPositionFilter}
         title="Headcount By Position"
+      />
+      <ChartPartTotalSalary
+        data={summaryTotalSalaryFilter.sort((a, b) => b.DATA - a.DATA)}
+        title="Total Salary Expenses By Department"
       />
     </div>
   );

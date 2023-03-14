@@ -1,45 +1,9 @@
+import useChartData from "@/src/hooks/useChartData";
 import isEmpty from "lodash.isempty";
 import React from "react";
-import { Bar, Doughnut } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 
 type Props = {
-  dataHeadCountByContractType: { LABEL: string; DATA: string | number }[];
-  dataHeadCountByAgeRange: { LABEL: string; DATA: string | number }[];
-};
-
-const ChartPartHeadcountByAgeRange = ({ title, data }: any) => {
-  return (
-    <div className="w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-3 mt-2 items-center shadow-lg shadow-blue-200">
-      <p className="font-semibold">{title}</p>
-      <div className="w-full flex justify-center lg:min-h-[200px] xl:min-h-[300px]">
-        <Bar
-          data={{
-            labels: !isEmpty(data)
-              ? data.map((item: { LABEL: string; DATA: number }) => item.LABEL)
-              : [],
-            datasets: [
-              {
-                label: "Headcount",
-                backgroundColor: !isEmpty(data)
-                  ? data.map(() => "#F06292")
-                  : [],
-                data: !isEmpty(data)
-                  ? data.map(
-                      (item: { LABEL: string; DATA: number }) => item.DATA
-                    )
-                  : [],
-              },
-            ],
-          }}
-          options={{
-            maintainAspectRatio: false,
-            responsive: true,
-            indexAxis: "y",
-          }}
-        />
-      </div>
-    </div>
-  );
 };
 
 const ChartPart = ({ labels, datasets, title }: any) => {
@@ -67,10 +31,10 @@ const ChartPart = ({ labels, datasets, title }: any) => {
   );
 };
 
-const SecondColumn = ({
-  dataHeadCountByContractType,
-  dataHeadCountByAgeRange,
-}: Props) => {
+const SecondColumn = ({ }: Props) => {
+  const { trainingTotalCostOverviewFilter, trainingTypeFilter } =
+    useChartData();
+
   function getTotal(
     arr: { LABEL: string; DATA: number | string }[],
     { LABEL, DATA }: { LABEL: string; DATA: number | string }
@@ -84,37 +48,37 @@ const SecondColumn = ({
     }
     return "0%";
   }
+
   return (
     <div className="h-[100%] flex flex-col md:flex-row justify-between">
       <ChartPart
-        title="Headcount by Contract Type"
+        title="Training Type"
         labels={
-          !isEmpty(dataHeadCountByContractType)
-            ? dataHeadCountByContractType.map(
+          !isEmpty(trainingTypeFilter)
+            ? trainingTypeFilter.map(
                 (item) =>
-                  `${
-                    getTotal(dataHeadCountByContractType, item) +
-                    " " +
-                    item.LABEL
-                  }`
+                  `${getTotal(trainingTypeFilter, item) + " " + item.LABEL} (${item.DATA})`
               )
             : []
         }
         datasets={[
           {
             label: " Headcount",
-            backgroundColor: (dataHeadCountByContractType ?? []).map(
+            backgroundColor: (trainingTypeFilter ?? []).map(
               (item) => "#" + Math.floor(Math.random() * 16777215).toString(16)
             ),
-            data: (dataHeadCountByContractType ?? []).map((item) => item.DATA),
+            data: (trainingTypeFilter ?? []).map((item) => item.DATA),
           },
         ]}
       />
-      {/* <ChartPartHeadcountByAgeRange
-        data={dataHeadCountByAgeRange}
-        title="Headcount By Age Range"
-      /> */}
-      <InformationPart arrayData={[]} />
+
+      <InformationPart
+        arrayData={trainingTotalCostOverviewFilter?.filter(
+          (item: { LABEL: string; DATA: string | number }) =>
+            item.LABEL === "Hours of Training vs Target" ||
+            item.LABEL === "Actual Cost vs Training Budget"
+        )}
+      />
     </div>
   );
 };
@@ -122,20 +86,38 @@ const SecondColumn = ({
 export default SecondColumn;
 
 const InformationPart = ({
-    arrayData,
-  }: {
-    arrayData: { LABEL: string; DATA: string }[];
-  }) => {
-    return (
-      <div className="w-full md:w-[49%] flex flex-col gap-[5px]">
+  arrayData,
+}: {
+  arrayData: { LABEL: string; DATA: number | string }[];
+}) => {
+  return (
+    <div className="w-full md:w-[49%] flex flex-col gap-[5px]">
+      {!isEmpty(arrayData) ? (
+        arrayData.map((item) => (
+          <div className="w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-5 mt-2 items-center shadow-lg shadow-blue-200">
+            <p className="text-[1.5rem]">{item.LABEL}</p>
+            <p>{Math.round(100 * Number(item.DATA)) / 100}%</p>
+          </div>
+        ))
+      ) : (
+        <></>
+      )}
+      {isEmpty(arrayData) ? (
         <div className="w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-5 mt-2 items-center shadow-lg shadow-blue-200">
-          <p>Hours of Training Vs Target</p>
+          <p className="text-[1.5rem]">Hours of Training Vs Target</p>
           <p>73,49%</p>
         </div>
+      ) : (
+        <></>
+      )}
+      {isEmpty(arrayData) ? (
         <div className="w-full justify-center flex flex-col border-[1px] border-blue-500 rounded-md p-5 mt-2 items-center shadow-lg shadow-blue-200">
-          <p>Hours of Training Vs Target</p>
+          <p className="text-[1.5rem]">Hours of Training Vs Target</p>
           <p>73,49%</p>
         </div>
-      </div>
-    );
-  };
+      ) : (
+        <></>
+      )}
+    </div>
+  );
+};
